@@ -60,8 +60,8 @@ write = write
 nl = nl
 var = var
 type = type 
-identificador =  {letra} ({letra} | [0-9] | \_ )*
-lit_cadena = \"[^\b,\n,\r]*\"
+identificador = {letra}({letra}|{digito})*
+lit_cadena = "[^\b,\n,\r]*"
 numeroEntero = [\+,\-]?{parteEntera}
 numeroReal =  [\+,\-]?{parteEntera}(\.{parteDecimal}|{parteExponencial}|\.{parteDecimal}{parteExponencial})
 mas = \+
@@ -80,7 +80,7 @@ menor = <
 mayor = >
 menor_igual = <\=
 mayor_igual = >\=
-distinto = \!\=
+distinto = !\=
 sep_seccion = &&
 puntoComa = ;
 coma  = \,
@@ -107,7 +107,7 @@ flecha = \->
 {endif}                   {return ops.unidadEndIf();}
 {while}                   {return ops.unidadWhile();}
 {do}                      {return ops.unidadDo();}
-{endwhile}                {return ops.unidadEndWhile();}
+{endwhile}                {return ops.unidadENdWhile();}
 {call}                    {return ops.unidadCall();}
 {record}                  {return ops.unidadRecord();}
 {array}                   {return ops.unidadArray();}
