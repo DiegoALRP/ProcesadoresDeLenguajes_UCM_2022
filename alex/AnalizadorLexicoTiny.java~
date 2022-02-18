@@ -856,7 +856,7 @@ class AnalizadorLexicoTiny {
             // fall through
           case 70: break;
           case 11:
-            { return ops.unidadPunto();
+            { return ops.unidadOPunto();
             }
             // fall through
           case 71: break;

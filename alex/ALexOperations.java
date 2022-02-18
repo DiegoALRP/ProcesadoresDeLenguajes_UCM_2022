@@ -187,7 +187,9 @@ public class ALexOperations {
    public UnidadLexica unidadFlecha() {
       return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(),ClaseLexica.FLECHA); 
    }
-   
+   public UnidadLexica unidadPunto() {
+      return new UnidadLexicaUnivaluada(alex.fila(), alex.columna(),ClaseLexica.PUNTO); 
+   }
   public void error() {
     System.err.println("***"+alex.fila()+" Caracter inexperado: "+alex.lexema());
   }

@@ -87,6 +87,7 @@ coma  = \,
 mod = %
 ampersand = &
 flecha = \->
+punto = \.
 %%
 {ignorar}                 {}
 {comentario}              {}
@@ -147,5 +148,6 @@ flecha = \->
 {coma}                    {return ops.unidadComa();}
 {ampersand}               {return ops.unidadAmpersand();}
 {flecha}                  {return ops.unidadFlecha();}
+{punto}                   {return ops.unidadPunto();}
 [^]                       {ops.error();}  
 
