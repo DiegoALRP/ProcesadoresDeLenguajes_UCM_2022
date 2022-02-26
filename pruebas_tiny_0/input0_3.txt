@@ -1,0 +1,9 @@
+int var_entera;
+real var_real;
+bool var_booleana;
+bool mayor;
+&&
+var_entera = (5*2 + 30) - 20;
+var_real = var_entera*30/15 + 45.6 - 36.0001e-12;
+var_booleana = var_entera == var_real;
+mayor = 56.98 >= 34e-12

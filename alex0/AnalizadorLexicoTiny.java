@@ -309,7 +309,12 @@ public class AnalizadorLexicoTiny {
   }
 
    public static void main(String arg[]) throws IOException {
-     Reader input = new InputStreamReader(new FileInputStream("input0_2.txt"));
+     //Reader input = new InputStreamReader(new FileInputStream("input0_2.txt"));
+     System.out.println("Ejecutando tiny0");
+     System.out.println("Se ha leido el fichero: " + arg[0]);
+     String ruta = "pruebas_tiny_0/";
+     ruta += arg[0];
+     Reader input = new InputStreamReader(new FileInputStream(ruta));
      AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
      UnidadLexica unidad;
      do {
@@ -317,5 +322,5 @@ public class AnalizadorLexicoTiny {
        System.out.println(unidad);
      }
      while (unidad.clase() != ClaseLexica.EOF);
-    } 
+    }
 }

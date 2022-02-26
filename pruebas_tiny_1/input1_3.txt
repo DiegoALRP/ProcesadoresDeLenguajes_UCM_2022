@@ -1,0 +1,71 @@
+int a = 2;
+real b = 2.235;
+bool c = true;
+string d = "oracion"
+bool e = true && false;
+bool f = false or false;
+pointer g = null;
+
+proc prueba(int a, int b, pointer & g, real d, string & z) {
+ if (a > b) then a = b - 1;
+ else a = b + 1;
+ endif;
+
+ do {
+    d = d * a;
+    g -> null;
+    }
+    while (a >= b);
+
+    call prueba(a * 2, b / 2, g, d % 3, z);
+}
+
+array [345] of real;
+
+new pointer x;
+delete pointer x;
+
+while (true) {
+    read(x, file);
+    write(file, x);
+}endwhile;
+
+type r;
+new x;
+delete x;
+array [20] of real;
+var prueba = x;
+
+while ( false ) {
+    read( x, file);
+    write(file, x);
+}endwhile;
+
+proc probado( array [] & x, var & z, pointer & point) {
+ while ( x < z && y >= 4 && true) {
+   x = x*x;
+   z = z%x;
+   }endwhile;
+}
+
+int i = 0;
+int j = n;
+real x = 0;
+real y = 1;
+new poiter z = 12345;
+
+while (i < j && x != y) {
+  i = i + 1;
+  y = x / 2;
+  x = y * 5;
+  if (i % 2 == 0) {
+    pointer -> x;
+  }endif;
+  else {
+     x = x - 1;
+  }endif;
+}
+
+proc prueba (int i, int j, real x, real y) {
+  call prueba(i + 1, j - i, x%2, y / 2);
+}
