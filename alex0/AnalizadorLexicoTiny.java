@@ -288,7 +288,7 @@ public class AnalizadorLexicoTiny {
   }
 
   private UnidadLexica unidadIgual_Igual() {
-    return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.Asignacion);     
+    return new UnidadLexicaUnivaluada(filaInicio,columnaInicio,ClaseLexica.Igual_igual);     
   }
 
   private UnidadLexica unidadPuntoComa() {
@@ -309,7 +309,7 @@ public class AnalizadorLexicoTiny {
   }
 
    public static void main(String arg[]) throws IOException {
-     Reader input = new InputStreamReader(new FileInputStream("input.txt"));
+     Reader input = new InputStreamReader(new FileInputStream("input0_2.txt"));
      AnalizadorLexicoTiny al = new AnalizadorLexicoTiny(input);
      UnidadLexica unidad;
      do {
