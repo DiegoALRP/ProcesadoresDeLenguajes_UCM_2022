@@ -2,6 +2,9 @@ package alex0;
 
 import java.io.FileInputStream;
 import java.io.Reader;
+
+import errors.GestionErroresTiny;
+
 import java.io.InputStreamReader;
 import java.io.IOException;
 
@@ -24,6 +27,7 @@ public class AnalizadorLexicoTiny {
    }
 
    private Estado estado;
+  private GestionErroresTiny errores;
 
    public AnalizadorLexicoTiny(Reader input) throws IOException {
     this.input = input;
@@ -304,7 +308,8 @@ public class AnalizadorLexicoTiny {
   }    
 
   private void error() {
-    System.err.println("("+filaActual+','+columnaActual+"):Caracter inexperado");  
+    //System.err.println("("+filaActual+','+columnaActual+"):Caracter inexperado"); 
+    errores.errorLexico(filaActual,columnaActual,lex.toString()); 
     System.exit(1);
   }
 
@@ -323,4 +328,8 @@ public class AnalizadorLexicoTiny {
      }
      while (unidad.clase() != ClaseLexica.EOF);
     }
+    
+  public void fijaGestionErrores(GestionErroresTiny errores) {
+    this.errores = errores;
+   }
 }
