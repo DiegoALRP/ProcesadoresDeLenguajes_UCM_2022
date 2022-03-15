@@ -55,7 +55,7 @@ public class AnalizadorLexicoTiny {
               else if (hayPAp()) transita(Estado.PAR_APER);
               else if (hayPCierre()) transita(Estado.PAR_CIER);
               else if (hayIgual()) transita(Estado.IGUAL);
-              else if (hayDistinto()) transita(Estado.DISTINTO);
+              else if (hayDistinto()) transita(Estado.PRE_DISTINTO);
               else if (hayMenor()) transita(Estado.MENOR);
               else if (hayMayor()) transita(Estado.MAYOR);
               else if (hayPuntoComa()) transita(Estado.PUNTO_COMA);

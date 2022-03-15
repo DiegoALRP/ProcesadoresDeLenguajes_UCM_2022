@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Launch AnalizadorLexicoTiny",
+            "request": "launch",
+            "mainClass": "alex0.AnalizadorLexicoTiny",
+            "projectName": "implementacion_manual_2cf91123"
+        },
+        {
+            "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
+            "mainClass": "asint.Main",
+            "projectName": "implementacion_manual_2cf91123"
+        },
+        {
+            "type": "java",
+            "name": "Launch Anal Sintactico",
+            "request": "launch",
+            "args": "input0_2.txt",
+            "mainClass": "${file}"
+        },
+    ]
+}

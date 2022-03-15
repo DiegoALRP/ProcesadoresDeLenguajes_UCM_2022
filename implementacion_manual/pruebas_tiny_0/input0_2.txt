@@ -1,0 +1,29 @@
+real valor;
+bool es_gordo;
+int var_entera;
+real var_real;
+bool var_booleana;
+bool mayor;
+bool menor;
+int prueba;
+bool boleana
+&&
+valor = (45.0 * 12e-56) / -2.05;
+es_gordo = (peso > 10.0) or (peso / 2 <= +0.0);
+es_gordo = es_gordo and es_gordo or es_gordo;
+var_entera = (5*2 + 30) - 20;
+var_real = var_entera * 30 + 15 + 45.6 - 36.0001e-12;
+var_booleana = es_gordo == var_real;
+mayor = 56.98 >= 34e-12;
+boleana = mayor > menor;
+boleana = mayor >= menor;
+boleana = menor < mayor;
+boleana = menor <= menor;
+boleana = mayor == menor;
+boleana = mayor != menor;
+booleana = mayor != menor or menor < mayor and mayor == menor;
+booleana = true or false;
+booleana = true and false or true or menor;
+boleana = menor < mayor > 4 == 5 <= 5;
+boleana = menor == 13 < 123e34 > -12;
+boleana = (3 + 3.12) > 15

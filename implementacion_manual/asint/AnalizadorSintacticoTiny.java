@@ -10,9 +10,6 @@ import alex0.ClaseLexica;
 import errors.GestionErroresTiny;
 import java.io.IOException;
 import java.io.Reader;
-import java.lang.invoke.SwitchPoint;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class AnalizadorSintacticoTiny {
    private UnidadLexica anticipo;
@@ -89,6 +86,7 @@ public class AnalizadorSintacticoTiny {
         break;
       case Bool:
         empareja(ClaseLexica.Bool);
+        break;
       default: errores.errorSintactico(anticipo.fila(),anticipo.columna(),anticipo.clase(),
         ClaseLexica.Bool, ClaseLexica.Entero, ClaseLexica.Real);  
     }
@@ -143,12 +141,12 @@ public class AnalizadorSintacticoTiny {
 
    private void E0(){
     switch(anticipo.clase()) {
-      case Menos:case Not:
+      case Menos:case Not: case Par_aper: case True: case False: case NumeroEntero: case NumeroReal: case Variable:
         E1();
         RE0();
         break;
       default: errores.errorSintactico(anticipo.fila(),anticipo.columna(),anticipo.clase(),
-        ClaseLexica.Menos,ClaseLexica.Not);
+        ClaseLexica.Menos,ClaseLexica.Not, ClaseLexica.Par_aper, ClaseLexica.True, ClaseLexica.False, ClaseLexica.NumeroEntero, ClaseLexica.NumeroReal);
     }  
    }
 
@@ -171,12 +169,12 @@ public class AnalizadorSintacticoTiny {
 
    private void E1(){
     switch(anticipo.clase()) {
-      case Menos:case Not:
+      case Menos:case Not: case Par_aper: case True: case False: case NumeroEntero: case NumeroReal: case Variable:
         E2();
         RE1();
         break;
       default: errores.errorSintactico(anticipo.fila(),anticipo.columna(),anticipo.clase(),
-        ClaseLexica.Menos,ClaseLexica.Not);
+        ClaseLexica.Menos,ClaseLexica.Not, ClaseLexica.Par_aper, ClaseLexica.True, ClaseLexica.False, ClaseLexica.NumeroEntero, ClaseLexica.NumeroReal);
     }  
    }
 
@@ -197,12 +195,12 @@ public class AnalizadorSintacticoTiny {
 
   private void E2(){
     switch(anticipo.clase()) {
-      case Menos:case Not:
+      case Menos:case Not: case Par_aper: case True: case False: case NumeroEntero: case NumeroReal: case Variable:
         E3();
         RE2();
         break;
       default: errores.errorSintactico(anticipo.fila(),anticipo.columna(),anticipo.clase(),
-        ClaseLexica.Menos,ClaseLexica.Not, ClaseLexica.Mas, ClaseLexica.And, ClaseLexica.Or);
+        ClaseLexica.Menos,ClaseLexica.Not, ClaseLexica.Par_aper, ClaseLexica.True, ClaseLexica.False, ClaseLexica.NumeroEntero, ClaseLexica.NumeroReal);
     }  
    }
 
@@ -224,14 +222,15 @@ public class AnalizadorSintacticoTiny {
 
    private void E3(){
     switch(anticipo.clase()) {
-      case Menos:case Not:
+      case Menos:case Not: case Par_aper: case True: case False: case NumeroEntero: case NumeroReal: case Variable:
         E4();
         RE3();
         break;
       default: errores.errorSintactico(anticipo.fila(),anticipo.columna(),anticipo.clase(),
         ClaseLexica.Menos,ClaseLexica.Not, ClaseLexica.Mas, ClaseLexica.And, ClaseLexica.Or,
         ClaseLexica.Menor,ClaseLexica.Mayor, ClaseLexica.Mayor_igual, ClaseLexica.Menor_igual, 
-        ClaseLexica.Igual_igual, ClaseLexica.Distinto);
+        ClaseLexica.Igual_igual, ClaseLexica.Distinto, ClaseLexica.Par_aper, ClaseLexica.True,
+        ClaseLexica.False, ClaseLexica.NumeroEntero, ClaseLexica.NumeroReal);
     }  
    }
 
@@ -260,11 +259,16 @@ public class AnalizadorSintacticoTiny {
       case Menos:
         empareja(ClaseLexica.Menos);
         E5();
-       break;
+        break;
+      case Par_aper: case True: case False: case NumeroEntero: case NumeroReal: case Variable:
+        E5();
+        break;
       default: errores.errorSintactico(anticipo.fila(),anticipo.columna(),anticipo.clase(),
       ClaseLexica.Menos,ClaseLexica.Not, ClaseLexica.Mas, ClaseLexica.And, ClaseLexica.Or,
       ClaseLexica.Menor,ClaseLexica.Mayor, ClaseLexica.Mayor_igual, ClaseLexica.Menor_igual, 
-      ClaseLexica.Igual_igual, ClaseLexica.Distinto, ClaseLexica.Por, ClaseLexica.Div); 
+      ClaseLexica.Igual_igual, ClaseLexica.Distinto, ClaseLexica.Por, ClaseLexica.Div,
+      ClaseLexica.Par_aper, ClaseLexica.True, ClaseLexica.False, ClaseLexica.NumeroEntero,
+       ClaseLexica.NumeroReal);
     }  
    }
 
@@ -286,6 +290,9 @@ public class AnalizadorSintacticoTiny {
         break;
       case True:
         empareja(ClaseLexica.True);
+        break;
+      case Variable:
+        empareja(ClaseLexica.Variable);
         break;
       default: errores.errorSintactico(anticipo.fila(),anticipo.columna(),anticipo.clase(),
       ClaseLexica.Menos,ClaseLexica.Not, ClaseLexica.Mas, ClaseLexica.And, ClaseLexica.Or,
