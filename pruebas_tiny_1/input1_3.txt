@@ -1,23 +1,52 @@
-int a = 2;
-real b = 2.235;
-bool c = true;
-string d = "oracion"
-bool e = true && false;
-bool f = false or false;
-pointer g = null;
+var int a;
+var real b;
+var bool c;
+var string d;
+var bool e;;
+var bool f;
 
 proc prueba(int a, int b, pointer & g, real d, string & z) {
  if (a > b) then a = b - 1;
  else a = b + 1;
  endif;
 
- do {
-    d = d * a;
-    g -> null;
-    }
-    while (a >= b);
+ 
+    while (a >= b) do {
+      d = d * a;
+      g -> null;
+    } endwhile;
 
     call prueba(a * 2, b / 2, g, d % 3, z);
+}
+
+proc ejercicio1_22(int a, real b, pointer g, record r) {
+
+  var int c;
+  var real d;
+  type pointer tNodo tArbol;
+  # contiene peso, altura y edad 
+  type record {
+    real peso;
+    real altura;
+    int edad;
+    string nombre;
+  }
+
+  proc ejercicio2_1_intento_5(int entero, real numeroReal, real entero_real) {
+
+    var int pepsi;
+    var int cocacola;
+    var int fanta
+
+    &&
+
+    if pepsi == cocacola then
+      call("mentira");
+      call("intenta de nuevo")
+    else call("cierto");
+      call("has acertado")
+    endif
+  }
 }
 
 array [345] of real;

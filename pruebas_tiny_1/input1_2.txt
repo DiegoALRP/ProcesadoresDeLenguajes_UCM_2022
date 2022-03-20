@@ -1,111 +1,34 @@
-type pointer tPuntero;
-type record {
- string nombre;
- string apellido;
- int edad;
- real dinero;
- bool hijos;
- } tCaracteristica;
-type record {
- array [50] of string nombres;
- int cont
-} tListaNombres;
-var tListaNombres nombres; # Aquí se guardarán los nombres leídos (max. 50)
+a = 2;
+b = 2.235;
+c = true;
+d = "oracion";
+e = true and false;
+f = false or false;
+g = null;
 
-int
-real
-bool
-string
-and
-or
-not
-null
-true
-false
-proc
-if
-then
-else
-endif
-while
-do
-endwhile
-call
-record
-array
-of
-pointer
-new
-delete
-read
-write
-nl
-var
-type
-identificador_generico
-id_generico
-nombre_identidicador122
-nombre_1234_identificador1233
-+24
--245
-13566
-0
-+234.234
--24.6756
-245e235
-35E-2435
-"caracteres"
-"conjunto de caracteres"
-evalua
-real
-=
-==
-<=
->=
-&&
-;
-2.3 false
-int0
-0true
-0
-0.0
-0.000000001
-1e10
-5E-10
-6e+10
-1.2E50
-+5865.5542e522
-+5
--5
-5
-10+5*2-10/100
-10 + 5 * 2 - 10 / 100
-10+(5*2)-10/100
+if(a==b)then{
+    d="pepito"
+}endif;
 
-
-0.00000
-
-&&
-+
--
-*
-/
-%
-<
->
-<=
->=
-==
-!=
-(
-)
-;
-=
-[
-]
+if(a<=b)then{
+    while(f) do{
+        g="ups"
+    }endwhile
 }
-{
-.
-->
-,
-&
+else if(a>=b) then{
+    a = b + 1;
+    b = a + 1
+}
+else if(a<b) then {
+    b = a + 1 #Preguntar a Jose Luis si debería funcionar a+1 o a + 1
+}
+else a = b * 2
+endif endif endif;
+
+nl;
+
+read "pez";
+write "cosas";
+new a->b;
+delete d[a];
+call func(d[2], b + 1)
