@@ -55,7 +55,7 @@ PARSER_END(AnalizadorSintacticoTiny)
   void SDec()          : {} {Dec() RSDec()}
   void RSDec()         : {} { ";" Dec() RSDec() | {} }
   void Dec()           : {} {<var> TipoVar() <iden> | <type> TipoVar() <iden> | <procedimiento> <iden> "("ParamFormales()")" "{"Bloque()"}" }
-  void TipoVar()       : {} { <ent> | <real> | <bool> | <string> | <iden> | <pointer> TipoVar() | <array> "["<numeroEntero>"]" <of> TipoVar() | <record> "{" ListaCampos()"}"}
+  void TipoVar()       : {} { <ent> | <real> | <bool> | <string> | <iden> | <pointer> TipoVar() | <array> "["<numeroEntero>"]" <of> TipoVar() | <record> "{" ListaCampos() "}"}
   void ListaCampos()   : {} {Campo() RListaCampos()}
   void RListaCampos()  : {} { ";" Campo() RListaCampos() | {} }
   void Campo()         : {} { TipoVar() <iden>}

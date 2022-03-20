@@ -34,6 +34,14 @@
             "mainClass": "asint.Main",
             "args": "pruebas_tiny_1/input1_2.txt",
             "projectName": "ProcesadoresDeLenguajes_UCM_2022_e0b1905d"
+        },
+        {
+            "type": "java",
+            "name": "Launch AnalSinTiny1-Diego",
+            "request": "launch",
+            "mainClass": "asint.Main",
+            "args": "pruebas_tiny_1/input1_3.txt",
+            "projectName": "ProcesadoresDeLenguajes_UCM_2022_af055bd0"
         }
     ]
 }
