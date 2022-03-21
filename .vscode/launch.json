@@ -9,6 +9,7 @@
             "type": "java",
             "name": "Launch Current File",
             "request": "launch",
+            "args": "pruebas_tiny_1/input1_3.txt asc",
             "mainClass": "${file}"
         },
         {
@@ -42,6 +43,15 @@
             "mainClass": "asint.Main",
             "args": "pruebas_tiny_1/input1_3.txt",
             "projectName": "ProcesadoresDeLenguajes_UCM_2022_e0b1905d"
+        }
+        ,
+        {
+            "type": "java",
+            "name": "Launch AnalSin",
+            "request": "launch",
+            "mainClass": "Main.Main",
+            "args": "pruebas_tiny_1/input1_3.txt asc",
+            "projectName": "ProcesadoresDeLenguajes_UCM_2022"
         }
     ]
 }

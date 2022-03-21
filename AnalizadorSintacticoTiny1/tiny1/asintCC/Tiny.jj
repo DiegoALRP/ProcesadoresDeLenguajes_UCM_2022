@@ -1,0 +1,90 @@
+options  {
+  STATIC=false;
+}  
+PARSER_BEGIN(AnalizadorSintacticoTiny)
+package asintCC;
+
+public class AnalizadorSintacticoTiny {}
+PARSER_END(AnalizadorSintacticoTiny)
+  TOKEN: {<#letra:["a"-"z","A"-"Z"]>}
+  TOKEN: {<#digitoPositivo:["1"-"9"]>}
+  TOKEN: {<#digito:<digitoPositivo>|"0">}
+  TOKEN: {<#parteEntera:<digitoPositivo> (<digito>)* |"0">} 
+  TOKEN: {<#parteDecimal: (<digito>)* <digitoPositivo> | "0">}
+  TOKEN: {<#parteExponencial: ["e","E"] <numeroEntero>>}
+  SKIP: {<["\t"," ","\r","\b","\n"]>}  
+  SKIP: {<"#"(~["\n"])*>}
+  TOKEN: {<ent: "int">}
+  TOKEN: {<real: "real">}
+  TOKEN: {<bool: "bool">}
+  TOKEN: {<True: "true">}
+  TOKEN: {<False: "false">}
+  TOKEN: {<and: "and">}
+  TOKEN: {<or: "or">}
+  TOKEN: {<not: "not">}
+  TOKEN: {<string: "string">}
+  TOKEN: {<Null: "null">}
+  TOKEN: {<procedimiento: "proc">}
+  TOKEN: {<If: "if">}
+  TOKEN: {<Then: "then">}
+  TOKEN: {<Else: "else">}
+  TOKEN: {<endif: "endif">}
+  TOKEN: {<While: "while">}
+  TOKEN: {<Do: "do">}
+  TOKEN: {<endwhile: "endwhile">}
+  TOKEN: {<call: "call">}
+  TOKEN: {<record: "record">}
+  TOKEN: {<array: "array">}
+  TOKEN: {<of: "of">}
+  TOKEN: {<pointer: "pointer">}
+  TOKEN: {<New: "new">}
+  TOKEN: {<delete: "delete">}
+  TOKEN: {<read: "read">}
+  TOKEN: {<write: "write">}
+  TOKEN: {<nl: "nl">}
+  TOKEN: {<var: "var">}
+  TOKEN: {<type: "type">}
+  TOKEN: {<lit_cadena: "\""(~["\b", "\n", "\r"])*"\"">}
+  TOKEN: {<numeroEntero: (["+","-"])? <parteEntera> >}
+  TOKEN: {<numeroReal: (["+","-"])? <parteEntera> ("." <parteDecimal> | <parteExponencial> | "." <parteDecimal> <parteExponencial> ) >}
+  TOKEN: {<iden: <letra>(<letra>|<digito>|"_")*>}
+
+  void Ini()           : {} {Programa() <EOF>}
+  void Programa()      : {} {OPDec() SInst() }
+  void OPDec()         : {} {SDec() "&""&" | {}}
+  void SDec()          : {} {Dec() RSDec()}
+  void RSDec()         : {} { ";" Dec() RSDec() | {} }
+  void Dec()           : {} {<var> TipoVar() <iden> | <type> TipoVar() <iden> | <procedimiento> <iden> "("ParamFormales()")" "{"Bloque()"}" }
+  void TipoVar()       : {} { <ent> | <real> | <bool> | <string> | <iden> | <pointer> TipoVar() | <array> "["<numeroEntero>"]" <of> TipoVar() | <record> "{" ListaCampos() "}"}
+  void ListaCampos()   : {} {Campo() RListaCampos()}
+  void RListaCampos()  : {} { ";" Campo() RListaCampos() | {} }
+  void Campo()         : {} { TipoVar() <iden>}
+  void ParamFormales() : {} { ListaParam() | {}}
+  void ListaParam()    : {} { Param() RListaParam()}
+  void RListaParam()   : {} { "," Param() RListaParam() | {}}
+  void Param()         : {} {TipoVar() RParam()}
+  void RParam()        : {} { "&" <iden> | <iden>}
+  void Bloque()        : {} {Programa() | {}}
+  void SInst()         : {} {Inst() RInst()}
+  void RInst()         : {} { ";" Inst() RInst() | {}}
+  void Inst()          : {} { E0() "=" E0() | <If> E0() <Then> SInst() Else() <endif> | <While> E0() <Do> SInst() <endwhile> | <read> E0() | <write> E0() | <nl> | <New> E0() | <delete> E0() | <call> <iden> "(" ParamRales()")" | "{"Bloque()"}"} 
+  void Else()          : {} { <Else> SInst() | {}}
+  void ParamRales()    : {} { E0() RParamReales() | {}}
+  void RParamReales()  : {} { "," E0() RParamReales() | {}}
+  void E0()            : {} {E1() RE0()}
+  void RE0()           : {} {"+" E0() | "-" E1() | {}}
+  void E1()            : {} {E2() RE1()}
+  void RE1()           : {} {OP1AI() E2() RE1() | {}}
+  void E2()            : {} {E3() RE2()}
+  void RE2()           : {} {OP2AI() E3() RE2() | {}}
+  void E3()            : {} {E4() RE3()}
+  void RE3()           : {} {OP3NA() E4() | {}}
+  void E4()            : {} { "-" E5() | <not> E4() | E5()}
+  void E5()            : {} {E6() RE5()}
+  void RE5()           : {} {OP5A() RE5() | {}}
+  void E6()            : {} {"*" E6() | E7() }
+  void E7()            : {} { <True> | <False> | <numeroEntero> | <numeroReal> | <lit_cadena> | <Null> | "(" E0() ")" | <iden>}
+  void OP1AI()         : {} { <and> | <or> }
+  void OP2AI()         : {} { ">" | "<" | "<=" | ">=" | "==" | "!=" }
+  void OP3NA()         : {} { "*" | "/" | "%" }
+  void OP5A()          : {} { "[" E0() "]" | "." <iden> | "->" <iden> }

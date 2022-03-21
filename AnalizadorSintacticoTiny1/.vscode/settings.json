@@ -1,0 +1,14 @@
+{
+    "java.project.sourcePaths": [
+        "main",
+        "alex",
+        "asintCC",
+        "asintCup",
+        "errorsCup",
+        "tiny1"
+    ],
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "cup.jar"
+    ]
+}
