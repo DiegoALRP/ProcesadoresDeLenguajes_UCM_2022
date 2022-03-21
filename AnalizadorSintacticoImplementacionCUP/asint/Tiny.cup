@@ -19,23 +19,24 @@ init with {:
 :};
 
 
+
 terminal     SEP_SECCION, PUNTO_COMA, VAR, IDEN, TYPE, PROCEDIMIENTO, PAR_APER, PAR_CIER, 
-             CORCHE_APER, CORCHE_CIER, ENT, REAL, BOOL, TRUE, FALSE, AND, OR, NOT 
+             CORCHE_APER, CORCHE_CIER, ENT, REAL, BOOL, TRUE, FALSE, AND, OR, NOT, 
              STRING, NULL, IF, THEN, ELSE, ENDIF, WHILE, DO, ENDWHILE, CALL, RECORD, 
              ARRAY, OF, POINTER, NEW, DELETE, READ, WRITE, NL, LIT_CADENA, NUM_ENTERO, NUM_REAL,
              CORCHE_RECT_APER, CORCHE_RECT_CIER, IGUAL, IGUAL_IGUAL, MAYOR, MENOR, MAYOR_IGUAL,
              MENOR_IGUAL, DISTINTO, AMPERSAND, FLECHA, COMA, MAS, MENOS, POR, DIV, MOD, PUNTO;
 
 non terminal  Programa, OPDec, SDec, Dec, TipoVar, ListaCampos, Campo, ParamFormales, 
-              ListaParam, Param, Bloque, SInst, Inst, Else, ParamRales, E0, E1, E2, E3
+              ListaParam, Param, Bloque, SInst, Inst, Else, ParamRales, E0, E1, E2, E3,
               E4, E5, E6, E7, OP1AI, OP2AI, OP3NA, OP5A;
 
 
 Programa      ::= OPDec SInst;
 OPDec         ::= SDec SEP_SECCION | ;
 SDec          ::= Dec | SDec PUNTO_COMA Dec;
-Dec           ::= VAR TipoVar IDEN | TYPE TipoVar IDEN | PROC IDEN PAR_APER ParamFormales PAR_CIER  CORCHE_APER Bloque CORCHE_CIER;
-TipoVar       ::= ENT | <real> | <bool> | <string> | <iden> | <pointer> TipoVar() | <array> "["<numeroEntero>"]" <of> TipoVar() | <record> "{" ListaCampos()"}"}
+Dec           ::= VAR TipoVar IDEN | TYPE TipoVar IDEN | PROCEDIMIENTO IDEN PAR_APER ParamFormales PAR_CIER  CORCHE_APER Bloque CORCHE_CIER;
+TipoVar       ::= ENT | REAL | BOOL | STRING | IDEN | POINTER TipoVar | ARRAY CORCHE_RECT_APER NUM_ENTERO CORCHE_RECT_CIER OF TipoVar | RECORD CORCHE_APER ListaCampos CORCHE_CIER;
 ListaCampos   ::= ListaCampos PUNTO_COMA Campo | Campo;
 Campo         ::= TipoVar IDEN;
 ParamFormales ::= ListaParam | ;
@@ -50,11 +51,11 @@ E0            ::= E1 MAS E0 | E1 MENOS E1 | E1 ;
 E1            ::= E1 OP1AI E2 | E2;
 E2            ::= E2 OP2AI E3 | E3;
 E3            ::= E4 OP3NA E4 | E4;
-E4            ::= MENOS E5 | NOT E4() | E5;
+E4            ::= MENOS E5 | NOT E4 | E5;
 E5            ::= E5 OP5A | E6;
 E6            ::= POR E6 | E7;
 E7            ::= TRUE | FALSE | NUM_ENTERO | NUM_REAL | LIT_CADENA | NULL | PAR_APER E0 PAR_CIER | IDEN;
 OP1AI         ::= AND | OR;
-OP2AI         ::= MENOR | MAYOR | MENOR_IGUAL | MAYOR | IGUAL_IGUAL | DISTINTO;
+OP2AI         ::= MENOR | MAYOR | MENOR_IGUAL | MAYOR_IGUAL | IGUAL_IGUAL | DISTINTO;
 OP3NA         ::= POR | DIV | MOD;
 OP5A          ::= CORCHE_RECT_APER E0 CORCHE_RECT_CIER | PUNTO IDEN | FLECHA IDEN;
