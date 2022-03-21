@@ -40,7 +40,7 @@
             "name": "Launch AnalSinCup",
             "request": "launch",
             "mainClass": "asint.Main",
-            "args": "pruebas_tiny_1/input1_1.txt",
+            "args": "pruebas_tiny_1/input1_3.txt",
             "projectName": "ProcesadoresDeLenguajes_UCM_2022_e0b1905d"
         }
     ]

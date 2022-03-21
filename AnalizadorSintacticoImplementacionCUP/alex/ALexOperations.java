@@ -106,10 +106,10 @@ public class ALexOperations {
    
    
   public UnidadLexica unidadNumEnt() {
-     return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.ENT,alex.lexema()); 
+     return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.NUM_ENTERO,alex.lexema()); 
   } 
   public UnidadLexica unidadNumReal() {
-     return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.REAL,alex.lexema()); 
+     return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.NUM_REAL,alex.lexema()); 
   } 
   public UnidadLexica unidadMas() {
      return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.MAS, "+"); 

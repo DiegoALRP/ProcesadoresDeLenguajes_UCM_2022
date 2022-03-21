@@ -28,7 +28,7 @@ terminal     SEP_SECCION, PUNTO_COMA, VAR, IDEN, TYPE, PROCEDIMIENTO, PAR_APER, 
              MENOR_IGUAL, DISTINTO, AMPERSAND, FLECHA, COMA, MAS, MENOS, POR, DIV, MOD, PUNTO;
 
 non terminal  Programa, OPDec, SDec, Dec, TipoVar, ListaCampos, Campo, ParamFormales, 
-              ListaParam, Param, Bloque, SInst, Inst, Else, ParamRales, E0, E1, E2, E3,
+              ListaParam, Param, Bloque, SInst, Inst, Else, ParamReales, E0, E1, E2, E3,
               E4, E5, E6, E7, OP1AI, OP2AI, OP3NA, OP5A;
 
 
@@ -44,9 +44,9 @@ ListaParam    ::= ListaParam COMA Param | Param;
 Param         ::= TipoVar AMPERSAND IDEN | TipoVar IDEN;
 Bloque        ::= Programa | ;
 SInst         ::= Inst | SInst PUNTO_COMA Inst;
-Inst          ::= E0 IGUAL E0 | IF E0 THEN SInst Else ENDIF | WHILE E0 DO SInst ENDWHILE | READ E0 | WRITE E0 | NL | NEW E0 | DELETE E0 | CALL IDEN PAR_APER ParamRales PAR_CIER | CORCHE_APER Bloque CORCHE_CIER; 
+Inst          ::= E0 IGUAL E0 | IF E0 THEN SInst Else ENDIF | WHILE E0 DO SInst ENDWHILE | READ E0 | WRITE E0 | NL | NEW E0 | DELETE E0 | CALL IDEN PAR_APER ParamReales PAR_CIER | CORCHE_APER Bloque CORCHE_CIER; 
 Else          ::= ELSE SInst | ;
-ParamRales    ::= ParamRales PUNTO_COMA E0 | E0 | ;
+ParamReales    ::= ParamReales COMA E0 | E0 | ;
 E0            ::= E1 MAS E0 | E1 MENOS E1 | E1 ;
 E1            ::= E1 OP1AI E2 | E2;
 E2            ::= E2 OP2AI E3 | E3;
