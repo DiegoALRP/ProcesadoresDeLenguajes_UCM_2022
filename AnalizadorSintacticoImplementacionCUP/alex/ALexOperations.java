@@ -88,7 +88,7 @@ public class ALexOperations {
      return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.WRITE, "write"); 
   }
   public UnidadLexica unidadNl() {
-     return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.Nl, "nl"); 
+     return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.NL, "nl"); 
   }
   public UnidadLexica unidadVar() {
      return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.VAR, "var"); 
@@ -175,9 +175,9 @@ public class ALexOperations {
    public UnidadLexica unidadSepSeccion() {
       return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.SEP_SECCION, "&&"); 
     }
-   /*public UnidadLexica unidadEof() {
-     return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.EOF); 
-   }*/
+   public UnidadLexica unidadEof() {
+     return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.EOF, "<EOF>"); 
+   }
 
    public UnidadLexica unidadAmpersand() {
       return new UnidadLexica(alex.fila(), alex.columna(),ClaseLexica.AMPERSAND, "&"); 

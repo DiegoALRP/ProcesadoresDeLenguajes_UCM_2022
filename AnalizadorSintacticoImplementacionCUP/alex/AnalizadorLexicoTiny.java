@@ -3,6 +3,7 @@
 // source: C:/Users/dani_/didone/ProcesadoresDeLenguajes_UCM_2022/AnalizadorSintacticoImplementacionCUP/alex/tiny.l
 
 package alex;
+import errors.GestionErroresTiny;
 
 
 // See https://github.com/jflex-de/jflex/issues/222
@@ -405,7 +406,7 @@ public class AnalizadorLexicoTiny implements java_cup.runtime.Scanner {
 
   /* user code: */
   private ALexOperations ops;
-  private GetionErroresTiny errores;
+  private GestionErroresTiny errores;
   public String lexema() {return yytext();}
   public int fila() {return yyline+1;}
   public int columna() {return yycolumn+1;}

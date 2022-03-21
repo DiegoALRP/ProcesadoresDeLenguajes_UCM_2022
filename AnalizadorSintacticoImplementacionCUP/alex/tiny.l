@@ -11,7 +11,7 @@ package alex;
 
 %{
   private ALexOperations ops;
-  private GetionErroresTiny errores;
+  private GestionErroresTiny errores;
   public String lexema() {return yytext();}
   public int fila() {return yyline+1;}
   public int columna() {return yycolumn+1;}
