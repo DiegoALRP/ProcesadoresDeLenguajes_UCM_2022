@@ -24,7 +24,7 @@ public class Main {
 	private static Prog ejecuta_descendente_manual(String in) throws Exception {
 		
 		Reader input = new InputStreamReader(new FileInputStream(in));
-		c_ast_descendente_manual.ConstructorAST constructorast = new c_ast_descendente_manual.ConstructorAST(input);
+		c_ast_descendente.ConstructorAST constructorast = new c_ast_descendente.ConstructorAST(input);
 		return constructorast.Init();
 	}
 }

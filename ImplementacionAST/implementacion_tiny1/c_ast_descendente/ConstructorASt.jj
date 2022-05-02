@@ -102,49 +102,50 @@ PARSER_END(ConstructorAST)
   SDec RSDec(SDec decah)    				: {SDec rsdecah, resul; Dec dec;}		
   																			{ ";" rsdecah = sem.sdec_muchas(decah, dec) resul = RSDec(dec) {return resul;} | { return decah; } }
   Dec Dec()           						: {TipoVar tipo; Token t; ParamFormales param; Bloque bloq;} 
-  																			{<var> tipo=TipoVar() t=<iden>) {return sem.dec_var(tipo, sem.str(t.lexema, t.fila(), t.columna()));}
-  																			| <type> tipo=TipoVar() t=<iden> {return sem.dec_type(tipo,sem.str(t.lexema, t.fila(), t.columna()) );}
-						| <procedimiento> t=<iden> "("param=ParamFormales()")" "{"bloq = Bloque()"}" {return sem.dec_proc( sem.str(t.lexema, t.fila(), t.columna()),param, bloq);}}
+  																			{<var> tipo=TipoVar() t=<iden>) {return sem.dec_var(tipo, sem.str(t.image, t.beginLine(), t.beginColumn()));}
+  																			| <type> tipo=TipoVar() t=<iden> {return sem.dec_type(tipo,sem.str(t.image, t.beginLine(), t.beginColumn()) );}
+						| <procedimiento> t=<iden> "("param=ParamFormales()")" "{"bloq = Bloque()"}" {return sem.dec_proc( sem.str(t.image, t.beginLine(), t.beginColumn()),param, bloq);}}
   TipoVar TipoVar()       					: {Token t; TipoVar tipo; ListaCampos campos;} 
   																			{ <ent> {return tipoVar("int");} | <real> { return tipoVar("real");} | <bool>{ return tipoVar("bool");} 
-  																			| <string> {return tipoVar("string"); }| t=<iden> {return tipoVar_iden(sem.str(t.lexema, t.fila(), t.columna()) ); } 
+  																			| <string> {return tipoVar("string"); }| t=<iden> {return tipoVar_iden(t.image); } 
 																			| <pointer> tipo=TipoVar() {return  tipoVar_pointer(tipo);} 
-							  						| <array> "["t=<numeroEntero>"]" <of> tipo=TipoVar() {return tipoVar_array( sem.str(t.lexema, t.fila(), t.columna()), tipo);}  
-							  						| <record> "{" camposListaCampos() "}" {return tipoVar_array(campos); }}
+							  						| <array> "["t=<numeroEntero>"]" <of> tipo=TipoVar() {return tipoVar_array( sem.str(t.image, t.beginLine(), t.beginColumn()), tipo);}  
+							  						| <record> "{" campos=ListaCampos() "}" {return tipoVar_array(campos); }}
   ListaCampo ListaCampos()   						: {Campo rlistacampoah; ListaCampos resul;} 
   																			{rlistacampoah=Campo() resul=RListaCampos(listaCampos_uno(rlistacampoah)) {return resul;}}
   ListaCampo RListaCampos(Campo rlistacampoah0)  		: {Campo rlistacampoah1; ListaCampos resul;} 
   											{ ";" rlistacampoah1= sem.listaCampos_muchos(rlistacampoah0,Campo()) resul=RListaCampos() {return resul;}| {return rlistacampoah0;} }
   Campo Campo()         						: {Token t; TipoVar tipo;} 
-  																			{ tipo=TipoVar() t=<iden> {returnsem.campo(tipo,sem.str(t.lexema, t.fila(), t.columna()))}}
+  																			{ tipo=TipoVar() t=<iden> {return sem.campo(tipo,sem.str(t.image, t.beginLine(), t.beginColumn()))}}
   ParamFormales ParamFormales() 						: {ListaParam lista;} 
   																			{ lista=ListaParam() {return lista;} | { return null;}}
   ListaParam ListaParam()    						: {Param paramah; ListaParam resul;} 
   																			{ paramah = Param()resul=RListaParam(lista_param_uno(paramah)){return resul}}
-  RListaParam RListaParam(ListaParama paramah0)   	: {ListaParam paramah1; ListaParam resul;} 
+  RListaParam RListaParam(ListaParam paramah0)   	: {ListaParam paramah1; ListaParam resul;} 
   																			{ "," paramah1=lista_param_muchos(paramah0,Param()) {resul=RListaParam(paramah1);} 
 																			| {return paramah0;}}
   Param Param()         						: {TipoVar rparamah; Param resul;} 
   																			{rparamah=TipoVar() resul=RParam(rparamah) {return resul;}}
   RParam RParam(TipoVar rparamah)        		: { Token t;} 
-  																			{ "&" t=<iden> {return param_amps(rparamah,sem.str(t.lexema, t.fila(), t.columna())) } 
-  																| t=<iden> return param_normal(sem.str(t.lexema, t.fila(), t.columna(),sem.str(t.lexema, t.fila(), t.columna()))}
+  																			{ "&" t=<iden> {return param_amps(rparamah,sem.str(t.image, t.beginLine(), t.beginColumn())) } 
+  																| t=<iden> {return param_normal(sem.str(t.image, t.beginLine(), t.beginColumn(),sem.str(t.image, t.beginLine(), t.beginColumn()));}}
   Bloque Bloque()        						: {Programa resultado;} 
-  																			{ resultado=Programa() {return sem.bloque_con(resultado);} | {return null;}}
+  																			{ resultado=Programa() {return sem.bloque(resultado);} | {return null;}}
   SInst SInst()         						: {Inst inst, SInst resultado;} 
-  																			{inst=Inst() resultado=RInst(sem.sints_uno(inst)) {return resultado;}}
-  SInst RInst(SInst rinstH)   					: {Inst inst; SInst rinst;} { ";" inst=Inst() rinst=RInst(rinstH, inst) | {return null;}}
+  																			{inst=Inst() resultado=RInst(sem.sinst_uno(inst)) {return resultado;}}
+  SInst RInst(SInst rinstH)   					: {Inst inst; SInst rinst;} 
+                                          { ";" inst=Inst() rinst=RInst(sem.sinst_muchos(rinstH, inst)) | {return null;}}
   Inst Inst()          							: {Exp exp0, exp01, exp02; SInst sinst; Else else; ParamReales paramReales; Token iden; Bloque bloque;} 
   																			{ exp01=E0() "=" exp02=E0() {return sem.inst_asig(exp01, exp02);} 
-																			| <If> exp0=E0() <Then> sints=SInst() else=Else() <endif> {return sem.inst_inf(exp0, sinst, else);} 
+																			| <If> exp0=E0() <Then> sints=SInst() else=Else() <endif> {return sem.inst_if(exp0, sinst, else);} 
 																			| <While> exp0=E0() <Do> sinst=SInst() <endwhile> {return sem.inst_while(exp0, sinst);} 
 																			| <read> exp0=E0() {return sem.inst_read(exp0);} 
 																			| <write> exp0=E0() {return sem.inst_write(exp0);} 
 																			| <nl> {return sem.inst_nl("nl")} 
 																			| <New> exp0=E0() {return sem.inst_new(exp0);} 
 																			| <delete> exp0=E0() {return sem.inst_delete(exp0);} 
-																			| <call> iden=<iden> "(" paramReales=ParamReales()")" {return sem.inst_call(iden.lexema(), iden.fila(), iden.columna());} 
-																			| "{" bloque=Bloque()"}" {return sem.inst_bloque(bloque);}} 
+																			| <call> iden=<iden> "(" paramReales=ParamReales()")" {return sem.inst_call(sem.str(iden.image(), iden.beginLine(), iden.beginColumn()), paramReales);} 
+																			| "{" bloque=Bloque()"}" {return inst_bloque(bloque);}} 
   Else Else()          							: {SInst sinst;} 
   																			{ <Else> sinst=SInst() {return sem.else_muchos(sinst);} | {return null;}} 
   ParamReales ParamReales()    					: {RParamReales resultado; Exp exp0;} 
@@ -179,16 +180,16 @@ PARSER_END(ConstructorAST)
 																			{ re5=RE5(rre5H) resultado=RRE5(re5) {return resultado;} | {return rre5H;}}
   Exp RE5(Exp expH)           					: {String operation; Exp exp0; Token iden;} 
   																			{ "[" exp0=E0() "]" {return sem.array_op(expH, exp0);} 
-																			| operation=OP5A() iden=<iden> {return sem.exp(operation, expH, iden.lexema(), iden.fila, iden.columna());}}
+																			| operation=OP5A() iden=<iden> {return sem.exp(operation, expH, iden.image(), iden.beginLine, iden.beginColumn());}}
   Exp E6()            							: {Exp exp6, exp7;} 
   																			{"*" exp6=E6() {return sem.pointer_ast(exp6);} | exp7=E7() {return exp7;}}
   Exp E7()                              		: {Token t; Exp exp0;} 
   																			{ <True> {return "true";} | <False> {return "false";} 
-																			| t=<numeroEntero> {return sem.entero(sem.str(t.lexema(), t.fila(), t.columna()));} 
-																			| t=<numeroReal> {return sem.real(sem.str(t.lexema(), t.fila(), t.columna()));} 
-																			| t=<lit_cadena> {return sem.lit_cadena(sem.str(t.lexema(), t.fila(), t.columna()));}
-																			| <Null> {return sem.nulo("null");} | "(" exp0=E0() ")" {return exp0;} 
-																			| t=<iden> {return sem.identificador(t.lexema(), t.fila(), t.columna());}}
+																			| t=<numeroEntero> {return sem.entero(sem.str(t.image(), t.beginLine(), t.beginColumn()));} 
+																			| t=<numeroReal> {return sem.real(sem.str(t.image(), t.beginLine(), t.beginColumn()));} 
+																			| t=<lit_cadena> {return sem.lit_cadena(sem.str(t.image(), t.beginLine(), t.beginColumn()));}
+																			| <Null> {return sem.nulo();} | "(" exp0=E0() ")" {return exp0;} 
+																			| t=<iden> {return sem.identificador(sem.str(t.image(), t.beginLine(), t.beginColumn()));}}
   String OP1AI()         						: {} 
   																			{ <and> {return "and";} | <or> {return "or";}}
   String OP2AI()         						: {} 
