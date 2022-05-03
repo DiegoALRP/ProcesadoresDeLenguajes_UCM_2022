@@ -241,31 +241,43 @@ public class TinyASint {
         
     }
 
-    public static class Flecha extends Acceso {
-        public Flecha(Exp arg0, Exp arg1) {
-            super(arg0,arg1);
+    public static class Flecha extends Op5A {
+        public Flecha(Exp E5, StringLocalizado iden) {
+            super(E5, iden);
         }
         public void procesa(Procesamiento p) {
            p.procesa(this); 
         }     
     }
-    
-    public static class Punto extends Acceso {
-        public Punto(Exp arg0, Exp arg1) {
-            super(arg0,arg1);
+    public abstract static class Op5A extends Exp{
+        private Exp E5;
+        private StringLocalizado iden;
+        public Op5A(Exp E5, StringLocalizado iden){
+            this.E5 = E5;
+            this.iden = iden;
+        }
+        public Exp e5(){return E5;}
+        public StringLocalizado iden(){return iden;}
+        public int prioridad() {
+			return 5;
+		}    
+    }
+    public static class Punto extends Op5A {
+        public Punto(Exp E5, StringLocalizado iden) {
+            super(E5, iden);
         }
         public void procesa(Procesamiento p) {
            p.procesa(this); 
-        }     
+        }
     }
     
-    public static class Array extends Acceso {
+    public static class Array extends Acceso{ 
         public Array(Exp arg0, Exp arg1) {
             super(arg0,arg1);
         }
         public void procesa(Procesamiento p) {
            p.procesa(this); 
-        }     
+        }    
     }
     //E6
     
@@ -501,17 +513,20 @@ public class TinyASint {
             this.rparamah = rparamah;
             this.iden = iden;
         }
-        public TipoVar tparamah() { return rparamah; }
+        public TipoVar tipo() { return rparamah; }
         public StringLocalizado iden() { return this.iden; }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
     }
     public static class Param_normal extends Param {
+         private TipoVar rparamah;
         private StringLocalizado iden;
-        public Param_normal(StringLocalizado iden) {
+        public Param_normal(TipoVar rparamah, StringLocalizado iden) {
+            this.rparamah = rparamah;
             this.iden = iden;
         }
+        public TipoVar tipo() { return rparamah; }
         public StringLocalizado iden() { return this.iden; }
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -884,7 +899,7 @@ public class TinyASint {
     }
     
     
-     // Constructoras    
+    // Constructoras
    
    public Prog prog(OPDec decs, SInst sinst){
        return new Prog(decs,sinst);
@@ -929,7 +944,7 @@ public class TinyASint {
     public Exp mod(Exp arg0, Exp arg1){
         return new Mod(arg0,arg1);
     }
-    public Exp nevativoOperation(Exp arg0) {
+    public Exp negativoOperation(Exp arg0) {
         return new Negativo(arg0);
     }
     public Exp notOperation(Exp arg0) {
@@ -947,34 +962,34 @@ public class TinyASint {
     public Exp lit_cadena(StringLocalizado arg0) {
         return new LitExp(arg0);
     }
-    public Exp flecha(Exp arg0, Exp arg1){
+    public Exp identificador(StringLocalizado arg) {
+        return new IdenExp(arg);
+    }
+    public Exp flecha(Exp arg0, StringLocalizado arg1){
         return new Flecha(arg0, arg1);
     }
-    public Exp punto(Exp arg0, Exp arg1){
+    public Exp punto(Exp arg0, StringLocalizado arg1){
         return new Punto(arg0, arg1);
     }
-    public Exp array(Exp arg0, Exp arg1){
+    public Exp array_op(Exp arg0, Exp arg1){
         return new Array(arg0, arg1);
     }
     public Exp pointer_ast(Exp arg0){
         return new PointerAst(arg0);
     }
-    public Exp identificador(StringLocalizado arg) {
-        return new IdenExp(arg);
-    }
     public TipoVar tipoVar(String tipo){
         return new TipoVar(tipo);
     }
-    public TipoVar_iden tipoVar_iden(StringLocalizado subtipo){
+    public TipoVar tipoVar_iden(StringLocalizado subtipo){
         return new TipoVar_iden(subtipo);
     }
-    public TipoVar_pointer tipoVar_pointer(TipoVar sub){
+    public TipoVar tipoVar_pointer(TipoVar sub){
         return new TipoVar_pointer(sub); 
     } 
-    public TipoVar_array tipoVar_array(StringLocalizado tam,TipoVar subtipo){
+    public TipoVar tipoVar_array(StringLocalizado tam,TipoVar subtipo){
         return new TipoVar_array(tam, subtipo);
     }
-    public TipoVar_record tipoVar_record(ListaCampos campos){
+    public TipoVar tipoVar_record(ListaCampos campos){
         return new TipoVar_record(campos);
     }
     public SDec sdec_una(Dec dec) {
@@ -983,10 +998,10 @@ public class TinyASint {
     public SDec sdec_muchas(SDec decs, Dec dec) {
         return new SDec_muchas(decs,dec);
     }
-    public SInst sinst_una(Inst inst){
+    public SInst sinst_uno(Inst inst){
         return new SInst_una(inst);
     }
-    public SInst sinst_muchas(SInst sinst, Inst inst){
+    public SInst sinst_muchos(SInst sinst, Inst inst){
         return new SInst_muchas(sinst, inst);
     }
     public StringLocalizado str(String s, int fila, int col) {
@@ -1020,11 +1035,11 @@ public class TinyASint {
         return new Campo(tipo, ide);
     }
 
-    public ListaCampos_uno listaCampos_uno(Campo campo){
+    public ListaCampos listaCampos_uno(Campo campo){
         return new ListaCampos_uno(campo);
     }
     
-    public ListaCampos_muchos listaCampos_muchos(ListaCampos campos, Campo campo){
+    public ListaCampos listaCampos_muchos(ListaCampos campos, Campo campo){
         return new ListaCampos_muchos(campos, campo);
     }
 
@@ -1061,11 +1076,24 @@ public class TinyASint {
     public OPDec opdec(SDec sdec){
         return new OPDec(sdec);
     }
+    public Bloque bloque(Prog programa){
+        return new Bloque(programa);
+    }
 
     public ListaParam lista_param_uno(Param param){
         return new Lista_param_uno(param);
     }
-    public ListaParam lista_param_muchos(Param param, ListaParam listaParam){
+    public ListaParam lista_param_muchos(ListaParam listaParam, Param param){
         return new Lista_param_muchos(listaParam, param);
-    }   
+    }  
+    public Param param_amps(TipoVar rparamah, StringLocalizado iden){
+        return new Param_amps(rparamah, iden);
+    } 
+    public Param param_normal(TipoVar rparamah, StringLocalizado iden){
+        return new Param_normal(rparamah,iden);
+    } 
+	public Nulo nulo() {
+        return new Nulo();
+    }
+
 }

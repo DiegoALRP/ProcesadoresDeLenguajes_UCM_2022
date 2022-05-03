@@ -17,6 +17,18 @@ public class SemOps extends TinyASint {
            case "/": return div(arg0,arg1);
        }
        throw new UnsupportedOperationException("exp "+op);
-   }  
+   }
+
+   public Exp exp_acc(String op, Exp arg0, StringLocalizado arg1) {
+       if(op==".") {
+            return punto(arg0, arg1);
+       }
+	   else if(op=="->") {
+		   return flecha(arg0, arg1);
+	   }
+	   else{
+       		throw new UnsupportedOperationException("exp "+op);
+	   }
+   }
      
 }

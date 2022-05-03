@@ -25,7 +25,7 @@ public class Main {
 		
 		Reader input = new InputStreamReader(new FileInputStream(in));
 		c_ast_descendente.ConstructorAST constructorast = new c_ast_descendente.ConstructorAST(input);
-		return constructorast.Init();
+		return constructorast.Ini();
 	}
 }
 

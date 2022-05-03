@@ -155,15 +155,17 @@ public class Impresion extends ProcesamientoPorDefecto {
 	}
     
     public void procesa(Param_amps param_amps) {
+        param_amps.tipo();
         System.out.println("& " + param_amps.iden());
     }
     public void procesa(Param_normal param_normal) {
-        System.out.println(param_normal.iden());
+        param_normal.tipo();
+        System.out.println(" "+param_normal.iden());
     }
 
     public void procesa(Bloque bloque) {
         if (bloque != null) {
-            bloque.procesa(this);
+            bloque.programa().procesa(this);
             System.out.println();
         }
     }
@@ -200,7 +202,7 @@ public class Impresion extends ProcesamientoPorDefecto {
         System.out.println();
     }
     public void procesa(Inst_nl inst_nl) {
-        System.out.println();
+        System.out.println("nl");
     }
     public void procesa(Inst_new inst_new) {
         System.out.print("new ");
@@ -342,17 +344,22 @@ public class Impresion extends ProcesamientoPorDefecto {
    }
 
    public void procesa(Array array) {
-       System.out.println(array.arg0() + " [" + array.arg1() + "] ");
+       array.arg0().procesa(this);
+       System.out.println(" [");
+       array.arg1().procesa(this);
+       System.out.print("] ");
    }
    public void procesa(Punto punto) {
-       System.out.println(punto.arg0() + "." + punto.arg1());
+       punto.e5().procesa(this);
+       System.out.print( " . " + punto.iden());
    }
    public void procesa(Flecha flecha) {
-       System.out.println(flecha.arg0() + "->" + flecha.arg1());
+       flecha.e5().procesa(this);
+       System.out.print(" -> " + flecha.iden());
    }
 
    public void procesa(PointerAst pointerAst) {
-       System.out.println("* " + pointerAst.arg0());
+       System.out.print("* " + pointerAst.arg0());
    }
 
    public void procesa(BooleanExp exp) {
@@ -368,7 +375,7 @@ public class Impresion extends ProcesamientoPorDefecto {
        System.out.println(litExp.var());
    }
    public void procesa(IdenExp idenExp) {
-       System.out.println(idenExp.var());
+       System.out.print(idenExp.var());
    }
    
    //Metodo auxiliar
