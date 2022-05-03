@@ -668,13 +668,13 @@ public class TinyASint {
         private OPDec sdec;
         private SInst sinst;
        public Prog(OPDec decs, SInst sinst) {
-           this.sdec = decs;
+            this.sdec = decs;
             this.sinst = sinst;
 	    }
         public OPDec opdec(){return sdec;}
         public SInst sinst(){return sinst;}
 	    public void procesa(Procesamiento p){
-           p.procesa(this);
+        	p.procesa(this);
        }
     }
 

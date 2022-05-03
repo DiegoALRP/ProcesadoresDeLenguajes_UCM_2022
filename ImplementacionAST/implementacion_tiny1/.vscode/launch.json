@@ -15,8 +15,7 @@
             "name": "Launch Main",
             "request": "launch",
             "mainClass": "tiny.Main",
-            "args": "input0_1.txt",
-            "projectName": "implementacion_tiny1_41f5484"
+            "args": "input1_2.txt",
         }
     ]
 }

@@ -68,16 +68,17 @@ public class Impresion extends ProcesamientoPorDefecto {
     public Impresion() {
     }
     public void procesa(Prog prog) {
-        prog.opdec().procesa(this);
+        
+        if (prog.opdec() != null) {
+            prog.opdec().procesa(this);
+        }
         System.out.println();
         prog.sinst().procesa(this); //procesa la expresion
         System.out.println();
     }  
 
-    public void procesa(OPDec op){//hmm
-       	if(op!=null){
-    		op.sdec().procesa(this);
-       	}
+    public void procesa(OPDec op){
+    	op.sdec().procesa(this);
     }
 
 	

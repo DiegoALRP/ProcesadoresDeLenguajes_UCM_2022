@@ -13,7 +13,7 @@ public class Main {
 
 		System.out.println("Ejecutando tiny0");
 		System.out.println("Se ha leido el fichero: " + args[0]);
-		String ruta = "pruebas_tiny_0/";
+		String ruta = "pruebas_tiny_1/";
 		ruta += args[0];
 
 		Prog prog = null;

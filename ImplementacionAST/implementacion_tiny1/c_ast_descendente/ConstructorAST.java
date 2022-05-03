@@ -109,9 +109,8 @@ public class ConstructorAST implements ConstructorASTConstants {
 
   final public SDec RSDec(SDec decah) throws ParseException {SDec resul; Dec dec;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case procedimiento:
-    case var:
-    case type:{
+    case 44:{
+      jj_consume_token(44);
       dec = Dec();
       resul = RSDec(sem.sdec_muchas(decah, dec));
 {if ("" != null) return resul;}
@@ -143,12 +142,12 @@ public class ConstructorAST implements ConstructorASTConstants {
     case procedimiento:{
       jj_consume_token(procedimiento);
       t = jj_consume_token(iden);
-      jj_consume_token(44);
-      param = ParamFormales();
       jj_consume_token(45);
+      param = ParamFormales();
       jj_consume_token(46);
-      bloq = Bloque();
       jj_consume_token(47);
+      bloq = Bloque();
+      jj_consume_token(48);
 {if ("" != null) return sem.dec_proc( sem.str(t.image, t.beginLine, t.beginColumn),param, bloq);}
       break;
       }
@@ -195,9 +194,9 @@ public class ConstructorAST implements ConstructorASTConstants {
       }
     case array:{
       jj_consume_token(array);
-      jj_consume_token(48);
-      t = jj_consume_token(numeroEntero);
       jj_consume_token(49);
+      t = jj_consume_token(numeroEntero);
+      jj_consume_token(50);
       jj_consume_token(of);
       tipo = TipoVar();
 {if ("" != null) return sem.tipoVar_array( sem.str(t.image, t.beginLine, t.beginColumn), tipo);}
@@ -205,9 +204,9 @@ public class ConstructorAST implements ConstructorASTConstants {
       }
     case record:{
       jj_consume_token(record);
-      jj_consume_token(46);
-      campos = ListaCampos();
       jj_consume_token(47);
+      campos = ListaCampos();
+      jj_consume_token(48);
 {if ("" != null) return sem.tipoVar_record(campos);}
       break;
       }
@@ -228,8 +227,8 @@ public class ConstructorAST implements ConstructorASTConstants {
 
   final public ListaCampos RListaCampos(ListaCampos rlistacampoah0) throws ParseException {Campo campo; ListaCampos resul;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case 50:{
-      jj_consume_token(50);
+    case 44:{
+      jj_consume_token(44);
       campo = Campo();
       resul = RListaCampos(sem.listaCampos_muchos(rlistacampoah0,campo));
 {if ("" != null) return resul;}
@@ -343,8 +342,8 @@ public class ConstructorAST implements ConstructorASTConstants {
     case numeroEntero:
     case numeroReal:
     case iden:
-    case 44:
-    case 46:
+    case 45:
+    case 47:
     case 52:
     case 53:
     case 54:
@@ -377,8 +376,8 @@ public class ConstructorAST implements ConstructorASTConstants {
 
   final public SInst RInst(SInst rinstH) throws ParseException {Inst inst; SInst rinst;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case 50:{
-      jj_consume_token(50);
+    case 44:{
+      jj_consume_token(44);
       inst = Inst();
       rinst = RInst(sem.sinst_muchos(rinstH, inst));
 {if ("" != null) return rinst;}
@@ -403,7 +402,7 @@ public class ConstructorAST implements ConstructorASTConstants {
     case numeroEntero:
     case numeroReal:
     case iden:
-    case 44:
+    case 45:
     case 52:
     case 53:
     case 54:
@@ -473,16 +472,16 @@ public class ConstructorAST implements ConstructorASTConstants {
     case call:{
       jj_consume_token(call);
       t = jj_consume_token(iden);
-      jj_consume_token(44);
-      paramReales = ParamReales();
       jj_consume_token(45);
+      paramReales = ParamReales();
+      jj_consume_token(46);
 {if ("" != null) return sem.inst_call(sem.str(t.image, t.beginLine, t.beginColumn), paramReales);}
       break;
       }
-    case 46:{
-      jj_consume_token(46);
-      bloque = Bloque();
+    case 47:{
       jj_consume_token(47);
+      bloque = Bloque();
+      jj_consume_token(48);
 {if ("" != null) return sem.inst_bloque(bloque);}
       break;
       }
@@ -668,7 +667,7 @@ public class ConstructorAST implements ConstructorASTConstants {
     case numeroEntero:
     case numeroReal:
     case iden:
-    case 44:
+    case 45:
     case 55:{
       exp6 = E6();
       resultado = RRE5(exp6);
@@ -684,7 +683,7 @@ public class ConstructorAST implements ConstructorASTConstants {
 
   final public Exp RRE5(Exp rre5H) throws ParseException {Exp re5, resultado;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case 48:
+    case 49:
     case 64:
     case 65:{
       re5 = RE5(rre5H);
@@ -701,10 +700,10 @@ public class ConstructorAST implements ConstructorASTConstants {
 
   final public Exp RE5(Exp expH) throws ParseException {String operation; Exp exp0; Token t;
     switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-    case 48:{
-      jj_consume_token(48);
-      exp0 = E0();
+    case 49:{
       jj_consume_token(49);
+      exp0 = E0();
+      jj_consume_token(50);
 {if ("" != null) return sem.array_op(expH, exp0);}
       break;
       }
@@ -738,7 +737,7 @@ public class ConstructorAST implements ConstructorASTConstants {
     case numeroEntero:
     case numeroReal:
     case iden:
-    case 44:{
+    case 45:{
       exp7 = E7();
 {if ("" != null) return exp7;}
       break;
@@ -783,10 +782,10 @@ public class ConstructorAST implements ConstructorASTConstants {
 {if ("" != null) return sem.nulo();}
       break;
       }
-    case 44:{
-      jj_consume_token(44);
-      exp0 = E0();
+    case 45:{
       jj_consume_token(45);
+      exp0 = E0();
+      jj_consume_token(46);
 {if ("" != null) return exp0;}
       break;
       }
@@ -927,10 +926,10 @@ public class ConstructorAST implements ConstructorASTConstants {
 	   jj_la1_init_2();
 	}
 	private static void jj_la1_init_0() {
-	   jj_la1_0 = new int[] {0x80000,0x80000,0x80000,0xb0020e00,0x0,0xb0020e00,0x0,0x0,0x91df000,0x0,0x915f000,0x400000,0x0,0x0,0xc000,0x0,0x0,0x10000,0x43000,0x0,0x0,0x43000,0x43000,0xc000,0x0,0x0,0x0,};
+	   jj_la1_0 = new int[] {0x80000,0x0,0x80000,0xb0020e00,0x0,0xb0020e00,0x0,0x0,0x91df000,0x0,0x915f000,0x400000,0x0,0x0,0xc000,0x0,0x0,0x10000,0x43000,0x0,0x0,0x43000,0x43000,0xc000,0x0,0x0,0x0,};
 	}
 	private static void jj_la1_init_1() {
-	   jj_la1_1 = new int[] {0x60,0x60,0x60,0x400,0x40000,0x400,0x80000,0xc00,0xfff057ff,0x40000,0xfff0579f,0x0,0x80000,0x600000,0x0,0x3f000000,0xc0800000,0x400000,0x801780,0x10000,0x10000,0x801780,0x1780,0x0,0x3f000000,0xc0800000,0x0,};
+	   jj_la1_1 = new int[] {0x60,0x1000,0x60,0x400,0x1000,0x400,0x80000,0xc00,0xfff0a7ff,0x1000,0xfff0a79f,0x0,0x80000,0x600000,0x0,0x3f000000,0xc0800000,0x400000,0x802780,0x20000,0x20000,0x802780,0x2780,0x0,0x3f000000,0xc0800000,0x0,};
 	}
 	private static void jj_la1_init_2() {
 	   jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3,0x3,0x0,0x0,0x0,0x0,0x0,0x3,};

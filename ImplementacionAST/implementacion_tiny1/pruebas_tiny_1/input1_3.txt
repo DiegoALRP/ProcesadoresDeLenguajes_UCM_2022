@@ -1,0 +1,124 @@
+#proc alo () { proc a_2_a () {} && {}};
+
+var int a;
+var real b;
+var bool c;
+var string d;
+var bool e;
+var bool f;
+
+proc prueba(int a, int b, int & g, real d, string & z) {
+ if (a > b) then a = b - 1
+ else a = b + 1
+ endif;
+
+ 
+    while (a >= b) do {
+      d = d * a;
+      g->sig = null
+    } endwhile;
+
+    call prueba(a * 2, b / 2, g, d % 3, z)
+};
+
+proc ejercicio1_22(int a, real b, pointer int g) {
+
+  var int c;
+  var real d;
+  type pointer tNodo tArbol;
+  # contiene peso, altura y edad 
+  type record {
+    real peso;
+    real altura;
+    int edad;
+    string nombre
+  } persona;
+
+  var bool here;
+
+  proc ejercicio2_1_intento_5 (int entero, real numeroReal, real entero_real) {
+
+    var int pepsi;
+    var int cocacola;
+    var int fanta;
+
+    proc probado_22_si( array [5] of real x, int z) {
+      proc prueba_45 (int i, int j, real x, real y) {
+        call prueba(i + 1, j - i, x%2, y / 2)
+      }
+      &&
+      while ( x < z and y >= 4 and true) do {
+        x = x*x;
+        z = z%x
+        }endwhile
+      }
+
+    &&
+
+    if pepsi == cocacola then
+      call incorrect ("mentira");
+      call retry ("intenta de nuevo")
+    else call correct ("cierto");
+      call finished ("has acertado")
+    endif
+  }
+  &&
+  i = i + 1
+};
+
+proc alo () { proc a_2_a () {} && {}};
+
+var array [365] of real dias
+
+&&
+
+new x;
+delete x;
+
+while (true) do {
+    read(file);
+    write(file)
+}endwhile;
+
+new x;
+delete x;
+prueba = x;
+
+while ( false ) do {
+    var int numero_de_personas;
+    var bool es_5
+    &&
+    if (numero_de_personas == 5) then {
+      var bool cierto
+      &&
+      cierto = true
+    }
+    else {
+      var bool cierto
+      &&
+      cierto = false
+    }endif;
+    #false == false
+    nl
+}endwhile;
+
+i = 0;
+j = n;
+x = 0;
+y = 1;
+
+while (i < j and x != y) do {
+  i = i + 1;
+  y = x / 2;
+  x = y * 5;
+  if (i % 2 == 0) then {
+    #z -> x and true
+    nl
+  }
+  else {
+     x = x - 1
+  }endif;
+  x = -1
+}endwhile;
+
+terminado = true

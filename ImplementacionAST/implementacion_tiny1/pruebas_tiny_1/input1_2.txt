@@ -1,0 +1,34 @@
+a = 2;
+b = 2.235;
+c = true;
+d = "oracion";
+e = (true and false);
+f = (false or false);
+g = null;
+
+if(a==b)then{
+    d="pepito"
+}endif;
+
+if(a<=b)then{
+    while(f) do{
+        g="ups"
+    }endwhile
+}
+else if(a>=b) then{
+    a = b + 1;
+    b = a + 1
+}
+else if(a<b) then {
+    b = a + 1 #Preguntar a Jose Luis si debería funcionar a+1 o a + 1
+}
+else a = b * 2
+endif endif endif;
+
+nl;
+
+read "pez";
+write "cosas";
+new a->b;
+delete d[a];
+call func(d[2], b + 1)

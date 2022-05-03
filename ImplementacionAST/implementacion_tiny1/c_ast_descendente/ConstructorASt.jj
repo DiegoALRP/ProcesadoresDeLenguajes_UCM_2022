@@ -124,7 +124,7 @@ PARSER_END(ConstructorAST)
   SDec SDec()          						: {Dec dec; SDec resul;}
   																			{dec = Dec() resul = RSDec(sem.sdec_una(dec)) {return resul;}}
   SDec RSDec(SDec decah) : {SDec resul; Dec dec;} 
-                                                            {dec = Dec() resul=RSDec(sem.sdec_muchas(decah, dec)) {return resul;} | {return decah;}}
+                                                            { ";" dec = Dec() resul=RSDec(sem.sdec_muchas(decah, dec)) {return resul;} | {return decah;}}
   Dec Dec()           						: {TipoVar tipo; Token t; ParamFormales param; Bloque bloq;} {<var> tipo=TipoVar() t=<iden> {return sem.dec_var(tipo, sem.str(t.image, t.beginLine, t.beginColumn));}
   																			| <type> tipo=TipoVar() t=<iden> {return sem.dec_type(tipo,sem.str(t.image, t.beginLine, t.beginColumn) );}
 						| <procedimiento> t=<iden> "("param=ParamFormales()")" "{"bloq = Bloque()"}" {return sem.dec_proc( sem.str(t.image, t.beginLine, t.beginColumn),param, bloq);}}
