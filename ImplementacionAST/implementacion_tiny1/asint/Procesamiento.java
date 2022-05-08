@@ -39,6 +39,8 @@ import asint.TinyASint.Menor_igual_que;
 import asint.TinyASint.Menor_que;
 import asint.TinyASint.Mod;
 import asint.TinyASint.OrOperation;
+import asint.TinyASint.ParamFormales_con;
+import asint.TinyASint.ParamFormales_sin;
 import asint.TinyASint.ParamReales_muchos;
 import asint.TinyASint.ParamReales_ninguno;
 import asint.TinyASint.ParamReales_uno;
@@ -139,4 +141,6 @@ public interface Procesamiento {
     void procesa(Inst_delete inst_delete);
     void procesa(Inst_call inst_call);
     void procesa(Inst_bloque inst_bloque);
+    void procesa(ParamFormales_con paramFormales_con);
+	void procesa(ParamFormales_sin paramFormales_sin);
 }

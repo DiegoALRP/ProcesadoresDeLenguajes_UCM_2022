@@ -5,6 +5,7 @@ PARSER_BEGIN(ConstructorAST)
 package c_ast_descendente;
 
 import asint.TinyASint.ParamReales;
+import asint.TinyASint.ParamFormales;
 import asint.TinyASint.Else;
 import asint.TinyASint.Exp;
 import asint.TinyASint.Param;
@@ -125,7 +126,7 @@ PARSER_END(ConstructorAST)
   																			{dec = Dec() resul = RSDec(sem.sdec_una(dec)) {return resul;}}
   SDec RSDec(SDec decah) : {SDec resul; Dec dec;} 
                                                             { ";" dec = Dec() resul=RSDec(sem.sdec_muchas(decah, dec)) {return resul;} | {return decah;}}
-  Dec Dec()           						: {TipoVar tipo; Token t; ListaParam param; Bloque bloq;} {<var> tipo=TipoVar() t=<iden> {return sem.dec_var(tipo, sem.str(t.image, t.beginLine, t.beginColumn));}
+  Dec Dec()           						: {TipoVar tipo; Token t; ParamFormales param; Bloque bloq;} {<var> tipo=TipoVar() t=<iden> {return sem.dec_var(tipo, sem.str(t.image, t.beginLine, t.beginColumn));}
   																			| <type> tipo=TipoVar() t=<iden> {return sem.dec_type(tipo,sem.str(t.image, t.beginLine, t.beginColumn) );}
 						| <procedimiento> t=<iden> "("param=ParamFormales()")" "{"bloq = Bloque()"}" {return sem.dec_proc( sem.str(t.image, t.beginLine, t.beginColumn),param, bloq);}}
   TipoVar TipoVar()       					: {Token t; TipoVar tipo; ListaCampos campos;} 
@@ -140,8 +141,8 @@ PARSER_END(ConstructorAST)
   											{ ";" campo = Campo() resul=RListaCampos(sem.listaCampos_muchos(rlistacampoah0,campo)) {return resul;}| {return rlistacampoah0;} }
   Campo Campo()         						: {Token t; TipoVar tipo;} 
   																			{ tipo=TipoVar() t=<iden> {return sem.campo(tipo,sem.str(t.image, t.beginLine, t.beginColumn));}}
-  ListaParam ParamFormales() 						: {ListaParam lista;} 
-  																			{ lista=ListaParam() {return lista;} | { return null;}}
+  ParamFormales ParamFormales() 						: {ListaParam lista;} 
+  																			{ lista=ListaParam() {return sem.paramFormales_con(lista);} | { return sem.paramFormales_sin();}}
   ListaParam ListaParam()    						: {Param paramah; ListaParam resul;} 
   																			{ paramah = Param() resul=RListaParam(sem.lista_param_uno(paramah)){return resul;}}
   ListaParam RListaParam(ListaParam paramah0)   	: {ListaParam resul;} 

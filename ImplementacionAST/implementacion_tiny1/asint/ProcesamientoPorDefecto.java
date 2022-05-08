@@ -50,6 +50,7 @@ import asint.TinyASint.Menor_igual_que;
 import asint.TinyASint.Menor_que;
 import asint.TinyASint.Mod;
 import asint.TinyASint.OrOperation;
+import asint.TinyASint.ParamFormales_con;
 import asint.TinyASint.ParamReales_muchos;
 import asint.TinyASint.ParamReales_ninguno;
 import asint.TinyASint.ParamReales_uno;
@@ -143,4 +144,6 @@ public class ProcesamientoPorDefecto implements Procesamiento {
    public void procesa(Inst_delete inst_delete) {}
    public void procesa(Inst_call inst_call) {}
    public void procesa(Inst_bloque inst_bloque) {}
+   public void procesa(ParamFormales_con paramFormales_con) {}
+   public void procesa(ParamFormales_sin paramFormales_sin) {}
 }

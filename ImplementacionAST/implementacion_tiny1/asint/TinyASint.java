@@ -450,16 +450,16 @@ public class TinyASint {
     }
     public static class Dec_proc extends Dec {
         private StringLocalizado iden;
-        private ListaParam params;
+        private ParamFormales params;
         private Bloque bloque;
-        public Dec_proc(StringLocalizado iden, ListaParam params, Bloque bloque){
+        public Dec_proc(StringLocalizado iden, ParamFormales params, Bloque bloque){
             super();
             this.iden=iden;
             this.params=params;
             this.bloque = bloque;
         }
         public StringLocalizado iden(){return iden;}
-        public ListaParam params() { return this.params; }
+        public ParamFormales params() { return this.params; }
         public Bloque bloque() { return this.bloque; }
         @Override
         public void procesa(Procesamiento p) {
@@ -528,6 +528,28 @@ public class TinyASint {
         }
         public TipoVar tipo() { return rparamah; }
         public StringLocalizado iden() { return this.iden; }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    public static abstract class ParamFormales{
+        public ParamFormales() {
+        }
+        public abstract void procesa(Procesamiento procesamiento);
+    }
+    public static class ParamFormales_con extends ParamFormales {
+        private ListaParam listaParam;
+        public ParamFormales_con(ListaParam listaParam) {
+            this.listaParam = listaParam;
+        }
+        public ListaParam listaParam() { return this.listaParam; }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    public static class ParamFormales_sin extends ParamFormales {
+        public ParamFormales_sin() {
+        }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -974,7 +996,12 @@ public class TinyASint {
    public Prog prog_con_sdec(OPDec sdec, SInst inst){
        return new Prog_con_decs(sdec, inst);
    }
-    
+    public ParamFormales paramFormales_con(ListaParam params){
+        return new ParamFormales_con(params);
+    }
+    public ParamFormales paramFormales_sin(){
+        return new ParamFormales_sin();
+    }
     public Exp suma(Exp arg0, Exp arg1) {
         return new Suma(arg0,arg1);
     }
@@ -1086,7 +1113,7 @@ public class TinyASint {
     public Dec dec_type(TipoVar tipo, StringLocalizado var){
         return new Dec_type(tipo, var);
     }
-    public Dec dec_proc(StringLocalizado iden, ListaParam params, Bloque bloque){
+    public Dec dec_proc(StringLocalizado iden, ParamFormales params, Bloque bloque){
         return new Dec_proc(iden, params, bloque);
     }
 

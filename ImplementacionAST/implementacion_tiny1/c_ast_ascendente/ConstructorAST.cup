@@ -1,0 +1,286 @@
+package c_ast_ascendente;
+
+import java_cup.runtime.*;
+import semops.SemOps;
+import asint.TinyASint.ParamFormales;
+import asint.TinyASint.StringLocalizado;
+import asint.TinyASint.Suma;
+import asint.TinyASint.Bloque;
+import asint.TinyASint.TipoBool;
+import asint.TinyASint.TipoEntero;
+import asint.TinyASint.TipoReal;
+import asint.TinyASint.TipoString;
+import asint.TinyASint.TipoVar_iden;
+import asint.TinyASint.TipoVar_pointer;
+import asint.TinyASint.Resta;
+import asint.TinyASint.Mul;
+import asint.TinyASint.Negativo;
+import asint.TinyASint.NotOperation;
+import asint.TinyASint.Nulo;
+import asint.TinyASint.OPDec;
+import asint.TinyASint.Div;
+import asint.TinyASint.Else_muchos;
+import asint.TinyASint.Else_ninguno;
+import asint.TinyASint.Entero;
+import asint.TinyASint.FalseExp;
+import asint.TinyASint.Flecha;
+import asint.TinyASint.IdenExp;
+import asint.TinyASint.Igual_igual;
+import asint.TinyASint.Inst_asig;
+import asint.TinyASint.Inst_bloque;
+import asint.TinyASint.Inst_call;
+import asint.TinyASint.Inst_delete;
+import asint.TinyASint.Inst_if;
+import asint.TinyASint.Inst_new;
+import asint.TinyASint.Inst_nl;
+import asint.TinyASint.Inst_read;
+import asint.TinyASint.Inst_while;
+import asint.TinyASint.Inst_write;
+import asint.TinyASint.ListaCampos_muchos;
+import asint.TinyASint.LitExp;
+import asint.TinyASint.Mayor_igual_que;
+import asint.TinyASint.Mayor_que;
+import asint.TinyASint.Menor_igual_que;
+import asint.TinyASint.Menor_que;
+import asint.TinyASint.Mod;
+import asint.TinyASint.OrOperation;
+import asint.TinyASint.ParamReales_muchos;
+import asint.TinyASint.ParamReales_ninguno;
+import asint.TinyASint.ParamReales_uno;
+import asint.TinyASint.Param_amps;
+import asint.TinyASint.Param_normal;
+import asint.TinyASint.PointerAst;
+import asint.TinyASint.Prog;
+import asint.TinyASint.SInst;
+import asint.TinyASint.TipoVar;
+import asint.TinyASint.Prog_con_decs;
+import asint.TinyASint.Prog_sin_decs;
+import asint.TinyASint.AndOperation;
+import asint.TinyASint.Array;
+import asint.TinyASint.Bloque_con;
+import asint.TinyASint.Bloque_sin;
+import asint.TinyASint.Campo;
+import asint.TinyASint.Dec_proc;
+import asint.TinyASint.Dec;
+import asint.TinyASint.SDec;
+import asint.TinyASint.Distinto_distinto;
+import asint.TinyASint.SDec_muchas ;
+import asint.TinyASint.SDec_una;
+import asint.TinyASint.SInst_muchas;
+import asint.TinyASint.SInst_una;
+import asint.TinyASint.Real;
+import asint.TinyASint.TipoVar_array;
+import asint.TinyASint.ListaCampos_uno;
+import asint.TinyASint.Lista_param_muchos;
+import asint.TinyASint.Lista_param_uno;
+import asint.TinyASint.TipoVar_record;
+import asint.TinyASint.TrueExp;
+import asint.TinyASint.Punto;
+import asint.TinyASint.Dec_type;
+import asint.TinyASint.Dec_var;
+
+
+scan with {: return getScanner().next_token(); :};
+action code {:
+   private SemOps sem = new SemOps();
+:};
+parser code {: 
+   private GestionErrores errores;
+   public void syntax_error(Symbol unidadLexica) {
+     errores.errorSintactico((UnidadLexica)unidadLexica);
+   }
+:};
+init with {: 
+   errores = new GestionErrores();
+   AnalizadorLexico alex = (AnalizadorLexico)getScanner();
+   alex.fijaGestionErrores(errores);
+:};
+
+terminal     SEP_SECCION, PUNTO_COMA, VAR, TYPE, PROCEDIMIENTO, PAR_APER, PAR_CIER, 
+             CORCHE_APER, CORCHE_CIER, ENT, REAL, BOOL, TRUE, FALSE, AND, OR, NOT, 
+             STRING, NULL, IF, THEN, ELSE, ENDIF, WHILE, DO, ENDWHILE, CALL, RECORD, 
+             ARRAY, OF, POINTER, NEW, DELETE, READ, WRITE, NL,
+             CORCHE_RECT_APER, CORCHE_RECT_CIER, IGUAL, IGUAL_IGUAL, MAYOR, MENOR, MAYOR_IGUAL,
+             MENOR_IGUAL, DISTINTO, AMPERSAND, FLECHA, COMA, MAS, MENOS, POR, DIV, MOD, PUNTO;
+terminal StringLocalizado IDEN, NUM_ENTERO, NUM_REAL, LIT_CADENA;
+
+non terminal Prog Prog;
+non terminal OPDec OPDec;
+non terminal SDec SDec;
+non terminal Dec Dec;
+non terminal TipoVar TipoVar;
+non terminal ListaCampos ListaCampos;
+non terminal Campo Campo;
+non terminal ParamFormales ParamFormales;
+non terminal ListaParam ListaParam;
+non terminal Param Param;
+non terminal Bloque Bloque;
+non terminal SInst SInst;
+non terminal Inst Inst;
+non terminal Else Else;
+non terminal ParamReales ParamReales;
+non terminal Exp E0, E1, E2, E3, E4, E5, E6, E7;
+non terminal Character OP1AI, OP2AI, OP3NA, OP5A;
+
+
+
+Prog      ::= OPDec: sdec SInst: sinst
+                {: RESULT = sem.prog(sdec,sinst);:};
+OPDec         ::= SDec: sdec SEP_SECCION
+                {: RESULT = sem.opdec(sdec);:};
+OPDec         ::= {: RESULT = null;:};
+SDec          ::= Dec: dec
+                {: RESULT = sem.sdec_una(dec);:};
+SDec          ::= SDec:sdec PUNTO_COMA Dec:dec
+                {:RESULT = sem.sdec_muchas(sdec, dec);:};
+Dec           ::= VAR TipoVar: tipo IDEN: iden  
+                {: RESULT = sem.dec_var(tipo, iden);:};
+Dec           ::= TYPE TipoVar: tipo IDEN:iden
+                {: RESULT = sem.dec_type(tipo, iden);:};
+Dec           ::= PROCEDIMIENTO IDEN: iden PAR_APER ParamFormales: param PAR_CIER CORCHE_APER Bloque:bloque CORCHE_CIER
+                {:RESULT = sem.dec_proc(iden,param,bloque);:};
+TipoVar       ::= ENT
+                {:RESULT = sem.tipoEntero();:};
+TipoVar       ::= REAL
+                {: RESULT = sem.tipoReal();:};
+TipoVar       ::= BOOL
+                {: RESULT = sem.tipoBool();:};
+TipoVar       ::= STRING
+                {: RESULT = sem.tipoString();:};
+TipoVar       ::= IDEN: iden
+                {: RESULT = sem.tipoVar_iden(iden);:};
+TipoVar       ::= POINTER TipoVar: tipo
+                {: RESULT = sem.tipoVar_pointer(tipo) ;:};
+TipoVar       ::= ARRAY CORCHE_RECT_APER NUM_ENTERO: num CORCHE_RECT_CIER OF TipoVar: tipo
+                {: RESULT = sem.tipoVar_array(num, tipo);:};
+TipoVar       ::= RECORD CORCHE_APER ListaCampos: campos CORCHE_CIER
+                {:RESULT = sem.tipoVar_record(campos);:};
+ListaCampos   ::= ListaCampos: campos PUNTO_COMA Campo: campo
+                {: RESULT =  sem.listaCampos_muchos(campos, campo);:};
+ListaCampos       ::= Campo: campo
+                {: RESULT = sem.listaCampos_uno(campo);:};
+Campo       ::= TipoVar: tipo IDEN: iden
+                {: RESULT = sem.campo(tipo, iden);:};
+ParamFormales ::= ListaParam: params
+                {: RESULT = params;:};
+ParamFormales ::= {:RESULT = null;:};
+ListaParam    ::= ListaParam: params COMA Param: param
+                {: RESULT = sem.lista_param_muchos(params, param);:};
+ListaParam    ::= Param: param
+                {: RESULT = sem.lista_param_uno(param);:};
+Param         ::= TipoVar: tipo AMPERSAND IDEN: iden
+                {: RESULT = sem.param_amps(tipo, iden);:};
+Param         ::= TipoVar: tipo IDEN: iden
+                {: RESULT = sem.param_normal(tipo, iden);:};
+Bloque        ::= Prog: programa
+                {: RESULT = sem.bloque_con(programa);:};
+Bloque        ::= {:RESULT =  sem.bloque_sin();:};
+SInst         ::= Inst: inst
+                {: RESULT = sem.sinst_uno(inst);:};
+SInst         ::= SInst: sinst PUNTO_COMA Inst: inst
+                {: RESULT = sem.sinst_muchos(sinst, inst);:};
+Inst          ::= E0: exp1 IGUAL E0: exp2
+                {: RESULT = sem.inst_asig(exp1, exp2);:}; 
+Inst          ::= IF E0: exp THEN SInst: sinst Else: elsee ENDIF
+                {: RESULT = sem.inst_if(exp, sinst, elsee);:};
+Inst          ::= WHILE E0: exp DO SInst: sinst ENDWHILE
+                {: RESULT = sem.inst_while(exp, sinst);:};
+Inst          ::= READ E0: exp
+                {: RESULT = sem.inst_read(exp);:};
+Inst          ::= WRITE E0: exp
+                {: RESULT = sem.write(exp);:};
+Inst          ::= NL
+                {: RESULT = sem.inst_nl();:};
+Inst          ::= NEW E0: exp
+                {: RESULT = sem.inst_new(exp);:};
+Inst          ::= DELETE E0: exp
+                {: RESULT = sem.inst_delete(exp);:};
+Inst          ::= CALL IDEN: iden PAR_APER ParamReales: paramReales PAR_CIER
+                {: RESULT = sem.inst_call(iden, paramReales);:};
+Inst          ::= CORCHE_APER Bloque: bloque CORCHE_CIER
+                {: RESULT = sem.inst_bloque(bloque);:};
+Else          ::= ELSE SInst: sinst 
+                {: RESULT = sem.else_muchos(sinst);:};
+Else          ::= {: RESULT = sem.else_ninguno();:};
+ParamReales    ::= ParamReales: paramReales COMA E0: exp
+                {: RESULT = sem.param_reales_muchos(paramReales, exp);:};
+ParamReales    ::= E0: exp
+                {: RESULT = sem.param_reales_uno(exp);:};
+ParamReales    ::= {: RESULT = sem.param_reales_ninguno();:};
+E0            ::= E1: exp1 MAS E0: exp2
+                {: RESULT = sem.suma(exp1, exp2);:};
+E0            ::= E1: exp1 MENOS E1: exp2
+                {: RESULT = sem.resta(exp1, exp2);:};
+E0            ::= E1: exp
+                {: RESULT = exp;:};
+E1            ::= E1: exp1 OP1AI: op E2: exp2
+                {: RESULT = sem.exp(op, exp1, exp2);:};
+E1            ::= E2: exp
+                {: RESULT = exp;:};
+E2            ::= E2: exp1 OP2AI: op E3: exp2
+                {: RESULT = sem.exp(op, exp1, exp2);:};
+E2            ::= E3: exp
+                {: RESULT = exp;:};
+E3            ::= E4: exp1 OP3NA: op E4: exp2
+                {: RESULT = sem.exp(op, exp1, exp2);:};
+E3            ::= E4: exp
+                {: RESULT = exp;:};
+E4            ::= MENOS E5: exp
+                {: RESULT = sem.negativo(exp);:};
+E4            ::= NOT E4: exp
+                {: RESULT = sem.not_op(exp);:};
+E4            ::= E5: exp
+                {: RESULT = exp;:};
+E5            ::= E5: exp1 CORCHE_RECT_APER E0: exp2 CORCHE_RECT_CIER
+                {: RESULT = sem.array_op(exp1, exp2);:};
+E5            ::= E5: exp1 OP5A: op IDEN: iden
+                {: RESULT = sem.exp_acc(op, exp1, iden);:};
+E5            ::= E6: exp
+                {: RESULT = exp;:};
+E6            ::= POR E6: exp
+                {: RESULT = sem.pointer_ast(exp);:};
+E6            ::= E7: exp
+                {: RESULT = exp;:};
+E7            ::= TRUE
+                {: RESULT = sem.true_exp();:};
+E7            ::= FALSE
+                {: RESULT = sem.false_exp();:};
+E7            ::= NUM_ENTERO: num
+                {: RESULT = sem.entero(num);:};
+E7            ::= NUM_REAL: num
+                {: RESULT = sem.real(num);:};
+E7            ::= LIT_CADENA: cadena
+                {: RESULT = sem.lit_cadena(cadena);:};
+E7            ::= NULL
+                {: RESULT = sem.nulo();:};
+E7            ::= IDEN: iden
+                {: RESULT = sem.identificador(iden);:};
+E7            ::= PAR_APER E0: exp PAR_CIER
+                {: RESULT = exp;:};
+OP1AI         ::= AND
+                {: RESULT = "and";:};
+OP1AI         ::= OR
+                {: RESULT = "or";:};
+OP2AI         ::= MENOR
+                {: RESULT = "<";:};
+OP2AI         ::= MAYOR
+                {: RESULT = ">";:};
+OP2AI         ::= MENOR_IGUAL
+                {: RESULT = "<=";:};
+OP2AI         ::= MAYOR_IGUAL
+                {: RESULT = ">=";:};
+OP2AI         ::= IGUAL_IGUAL
+                {: RESULT = "==";:};
+OP2AI         ::= DISTINTO
+                {: RESULT = "!=";:};
+OP3NA         ::= POR
+                {: RESULT = "*";:};
+OP3NA         ::= DIV
+                {: RESULT = "/";:};
+OP3NA         ::= MOD
+                {: RESULT = "%";:};
+OP5A          ::= PUNTO
+                {: RESULT = ".";:};
+OP5A          ::=  FLECHA
+                {: RESULT = "->";:};
+                
