@@ -7,6 +7,7 @@ import asint.TinyASint.SDec;
 import asint.TinyASint.Dec;
 import asint.TinyASint.Exp;
 import asint.TinyASint.SInst;
+import asint.TinyASint.Tipo;
 import asint.TinyASint.Inst;
 import semops.SemOps;
 
@@ -47,7 +48,7 @@ public class ConstructorAST {
 	 private Dec Dec(){
 			switch(anticipo.clase()) {
 				case Real: case Bool: case Entero:
-					String tipo =  Tipo();
+					Tipo tipo =  Tipo();
 					UnidadLexica tkvar = anticipo;
 					empareja(ClaseLexica.Variable);
 					return sem.dec(tipo,sem.str(tkvar.lexema(),tkvar.fila(),tkvar.columna()));
@@ -83,20 +84,20 @@ public class ConstructorAST {
 	 }
 
 
-	 private String Tipo(){
+	 private Tipo Tipo(){
 		switch(anticipo.clase()) {
 			case Real:
 				empareja(ClaseLexica.Real);
-				return "real";
+				return sem.tipoReal();
 			case Bool:
 				empareja(ClaseLexica.Bool);
-				return "bool";
+				return sem.tipoBool();
 			case Entero:
 				empareja(ClaseLexica.Entero);
-				return "int";
+				return sem.tipoEntero();
 			default:  errores.errorSintactico(anticipo.fila(),anticipo.columna(),anticipo.clase(),
 				ClaseLexica.Bool, ClaseLexica.Entero, ClaseLexica.Real);
-				return "?";
+				return null;
 		}
 
 	}
@@ -295,7 +296,7 @@ public class ConstructorAST {
 			case False:
 				//UnidadLexica tkfalse = anticipo;//directamente string?? hace falta tenerlo localizado??
 				empareja(ClaseLexica.False);
-				return sem.booleanExp("false");//sem.str("false", tkfalse.fila(), tkfalse.columna()));
+				return sem.false_exp();//sem.str("false", tkfalse.fila(), tkfalse.columna()));
 			case NumeroEntero:
 				UnidadLexica tkentero = anticipo;
 				empareja(ClaseLexica.NumeroEntero);
@@ -307,7 +308,7 @@ public class ConstructorAST {
 			case True:
 				//UnidadLexica tktrue = anticipo;//directamente string??
 				empareja(ClaseLexica.True);
-				return sem.booleanExp("true");//sem.str("true", tktrue.fila(), tktrue.columna()));
+				return sem.true_exp();//sem.str("true", tktrue.fila(), tktrue.columna()));
 			case Variable:
 				UnidadLexica tkvar = anticipo;
 				empareja(ClaseLexica.Variable);

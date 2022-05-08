@@ -398,8 +398,6 @@ public class TinyASint {
         }
     }
 
-
-
     //
     public static abstract class Dec {
         public Dec() {
@@ -959,6 +957,7 @@ public class TinyASint {
     public Exp real(StringLocalizado arg0) {
         return new Real(arg0);
     }
+    public Exp bool
     public Exp lit_cadena(StringLocalizado arg0) {
         return new LitExp(arg0);
     }

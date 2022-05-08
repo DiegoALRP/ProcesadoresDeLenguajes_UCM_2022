@@ -2,6 +2,10 @@ package procesamientos;
 
 import asint.TinyASint.Prog;
 import asint.TinyASint.Suma;
+import asint.TinyASint.TipoBool;
+import asint.TinyASint.TipoEntero;
+import asint.TinyASint.TipoReal;
+import asint.TinyASint.TrueExp;
 import asint.TinyASint.Resta;
 import asint.TinyASint.Mul;
 import asint.TinyASint.Div;
@@ -22,11 +26,11 @@ import asint.TinyASint.Igual_igual;
 import asint.TinyASint.Distinto_distinto;
 import asint.TinyASint.Negativo;
 import asint.TinyASint.NotOperation;
-import asint.TinyASint.BooleanExp;
 import asint.TinyASint.Entero;
 import asint.TinyASint.Real;
 import asint.ProcesamientoPorDefecto;
 import asint.TinyASint.Exp;
+import asint.TinyASint.FalseExp;
 
 
 public class Impresion extends ProcesamientoPorDefecto {
@@ -52,9 +56,9 @@ public class Impresion extends ProcesamientoPorDefecto {
 	}  
 
     public void procesa(Dec dec) {
-        System.out.print(dec.tipo() + " = " + dec.var());
+    	dec.tipo().procesa(this);
+        System.out.print(" = " + dec.var());
     }
-
 
     public void procesa(Inst inst){
         System.out.print(inst.var() + " = ");
@@ -143,8 +147,11 @@ public class Impresion extends ProcesamientoPorDefecto {
       System.out.print(" - ");
       exp.arg0().procesa(this);       
    }
-   public void procesa(BooleanExp exp) {
-      System.out.print(exp.val());     
+   public void procesa(TrueExp exp){
+      System.out.print("true");
+   }
+   public void procesa(FalseExp exp){
+      System.out.print("false");
    }
    public void procesa(Entero exp) {
       System.out.print(exp.num());     
@@ -155,6 +162,17 @@ public class Impresion extends ProcesamientoPorDefecto {
    public void procesa(VaribleExp exp) {
       System.out.print(exp.var());     
    }
+
+   public void procesa(TipoEntero tipoEntero) {
+      System.out.print("int");
+   }
+   public void procesa(TipoReal tipoReal) {
+       System.out.print("real");
+   }
+   public void procesa(TipoBool tipoBool) {
+       System.out.print("bool");
+   }
+
    //Metodo auxiliar
    private void imprime_arg(Exp arg, int p) {
        if (arg.prioridad() < p) {

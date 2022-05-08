@@ -14,7 +14,7 @@
             "type": "java",
             "name": "Main.java",
             "request": "launch",
-            "args": "input0_2.txt",
+            "args": "input0_3.txt",
             "mainClass": "tiny.Main"
         }
     ]

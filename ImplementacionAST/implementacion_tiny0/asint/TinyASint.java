@@ -220,16 +220,27 @@ public class TinyASint {
     }
 
     //E5
-    public static class BooleanExp extends Exp{
-        private String booleanString;//solo string??
-        public BooleanExp(String arg0) {
-            this.booleanString = arg0;//solo string??
-        }
-        public String val() {return booleanString;}
+    public static class TrueExp extends Exp{
+        public TrueExp(){}
+
         @Override
         public int prioridad() {
             return 5;
         }
+
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+     public static class FalseExp extends Exp{
+        public FalseExp(){}
+
+        @Override
+        public int prioridad() {
+            return 5;
+        }
+
         @Override
         public void procesa(Procesamiento p) {
             p.procesa(this);
@@ -292,14 +303,44 @@ public class TinyASint {
         }
     }
 
+    public static abstract class Tipo {
+        public Tipo() {
+        }
+        public abstract void procesa(Procesamiento procesamiento);
+    }
+    public static class TipoEntero extends Tipo {
+        public TipoEntero(){
+        }
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    public static class TipoReal extends Tipo {
+        public TipoReal(){
+        }
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    public static class TipoBool extends Tipo {
+        public TipoBool(){
+        }
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    
     public static class Dec  {
-        private String tipo;
+        private Tipo tipo;
         private StringLocalizado var;
-        public Dec(String tipo, StringLocalizado var) {
+        public Dec(Tipo tipo, StringLocalizado var) {
             this.tipo = tipo;
             this.var = var;
         }
-        public String tipo() {return tipo;}
+        public Tipo tipo() {return tipo;}
         public StringLocalizado var() {return var;}
         public void procesa(Procesamiento p) {
            p.procesa(this); 
@@ -442,8 +483,11 @@ public class TinyASint {
     public Exp notOperation(Exp arg0) {
         return new NotOperation(arg0);
     }
-    public Exp booleanExp(String arg0) {
-        return new BooleanExp(arg0);
+    public Exp true_exp(){
+        return new TrueExp();
+    }
+    public Exp false_exp(){
+        return new FalseExp();
     }
     public Exp entero(StringLocalizado arg0) {
         return new Entero(arg0);
@@ -454,7 +498,7 @@ public class TinyASint {
     public Exp var(StringLocalizado arg0) {
         return new VaribleExp(arg0);
     }
-    public Dec dec(String tipo, StringLocalizado var) {
+    public Dec dec(Tipo tipo, StringLocalizado var) {
         return new Dec(tipo,var);
     }
     public SDec sdec_una(Dec dec) {
@@ -474,5 +518,14 @@ public class TinyASint {
     }
     public StringLocalizado str(String s, int fila, int col) {
         return new StringLocalizado(s,fila,col);
+    }
+    public TipoEntero tipoEntero() {
+        return new TipoEntero();
+    }
+    public TipoReal tipoReal() {
+        return new TipoReal();
+    }
+    public TipoBool tipoBool() {
+        return new TipoBool();
     }
 }

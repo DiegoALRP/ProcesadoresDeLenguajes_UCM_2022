@@ -1,6 +1,10 @@
 package asint;
 
 import asint.TinyASint.Suma;
+import asint.TinyASint.TipoBool;
+import asint.TinyASint.TipoEntero;
+import asint.TinyASint.TipoReal;
+import asint.TinyASint.TrueExp;
 import asint.TinyASint.VaribleExp;
 import asint.TinyASint.Resta;
 import asint.TinyASint.Mul;
@@ -8,6 +12,7 @@ import asint.TinyASint.Negativo;
 import asint.TinyASint.NotOperation;
 import asint.TinyASint.Div;
 import asint.TinyASint.Entero;
+import asint.TinyASint.FalseExp;
 import asint.TinyASint.Igual_igual;
 import asint.TinyASint.Inst;
 import asint.TinyASint.Mayor_igual_que;
@@ -16,7 +21,6 @@ import asint.TinyASint.Menor_igual_que;
 import asint.TinyASint.Menor_que;
 import asint.TinyASint.OrOperation;
 import asint.TinyASint.AndOperation;
-import asint.TinyASint.BooleanExp;
 import asint.TinyASint.Dec;
 import asint.TinyASint.Distinto_distinto;
 import asint.TinyASint.SDec_muchas ;
@@ -42,7 +46,6 @@ public interface Procesamiento {
     void procesa(Div exp);
     void procesa(Negativo exp);
     void procesa(NotOperation exp);
-    void procesa(BooleanExp exp);
     void procesa(Entero exp);
     void procesa(Real exp);
     void procesa(Dec dec);
@@ -53,4 +56,9 @@ public interface Procesamiento {
     void procesa(Inst inst);
     void procesa(Prog prog);
     void procesa(VaribleExp varibleExp);
+    void procesa(TrueExp trueExp);
+    void procesa(FalseExp falseExp);
+    void procesa(TipoEntero tipoEntero);
+    void procesa(TipoReal tipoReal);
+    void procesa(TipoBool tipoBool);
 }
