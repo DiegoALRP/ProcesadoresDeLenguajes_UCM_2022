@@ -1,14 +1,19 @@
 package procesamientos;
 
-import asint.TinyASint.Prog;
+import asint.TinyASint.Prog_con_decs;
+import asint.TinyASint.Prog_sin_decs;
 import asint.TinyASint.Punto;
 import asint.TinyASint.Suma;
-import asint.TinyASint.TipoVar;
+import asint.TinyASint.TipoBool;
+import asint.TinyASint.TipoEntero;
+import asint.TinyASint.TipoReal;
+import asint.TinyASint.TipoString;
 import asint.TinyASint.TipoVar_array;
 import asint.TinyASint.Resta;
 import asint.TinyASint.Mul;
 import asint.TinyASint.Div;
 import asint.TinyASint.Else_muchos;
+import asint.TinyASint.Else_ninguno;
 import asint.TinyASint.Dec_proc;
 import asint.TinyASint.SDec_muchas;
 import asint.TinyASint.SDec_una;
@@ -23,6 +28,7 @@ import asint.TinyASint.Inst_new;
 import asint.TinyASint.Inst_nl;
 import asint.TinyASint.Inst_read;
 import asint.TinyASint.Inst_while;
+import asint.TinyASint.Inst_write;
 import asint.TinyASint.ListaCampos_muchos;
 import asint.TinyASint.ListaCampos_uno;
 import asint.TinyASint.Lista_param_muchos;
@@ -32,9 +38,9 @@ import asint.TinyASint.SInst_muchas;
 import asint.TinyASint.SInst_una;
 import asint.TinyASint.AndOperation;
 import asint.TinyASint.Array;
-import asint.TinyASint.Bloque;
+import asint.TinyASint.Bloque_con;
+import asint.TinyASint.Bloque_sin;
 import asint.TinyASint.OrOperation;
-import asint.TinyASint.ParamFormales;
 import asint.TinyASint.ParamReales_muchos;
 import asint.TinyASint.ParamReales_uno;
 import asint.TinyASint.Param_amps;
@@ -49,16 +55,20 @@ import asint.TinyASint.Igual_igual;
 import asint.TinyASint.Distinto_distinto;
 import asint.TinyASint.Negativo;
 import asint.TinyASint.NotOperation;
+import asint.TinyASint.Nulo;
 import asint.TinyASint.OPDec;
-import asint.TinyASint.BooleanExp;
 import asint.TinyASint.Campo;
 import asint.TinyASint.Entero;
 import asint.TinyASint.Real;
 import asint.TinyASint.TipoVar_iden;
 import asint.TinyASint.TipoVar_pointer;
 import asint.TinyASint.TipoVar_record;
+import asint.TinyASint.TrueExp;
+
+
 import asint.ProcesamientoPorDefecto;
 import asint.TinyASint.Exp;
+import asint.TinyASint.FalseExp;
 import asint.TinyASint.Flecha;
 import asint.TinyASint.IdenExp;
 
@@ -67,21 +77,20 @@ public class Impresion extends ProcesamientoPorDefecto {
     
     public Impresion() {
     }
-    public void procesa(Prog prog) {
-        
-        if (prog.opdec() != null) {
-            prog.opdec().procesa(this);
-        }
-        System.out.println();
-        prog.sinst().procesa(this); //procesa la expresion
-        System.out.println();
-    }  
-
+	
+     public void procesa(Prog_sin_decs prog) { 
+         prog.sinst().procesa(this);
+	 }
+ public void procesa(Prog_con_decs prog) {
+	 prog.opdec().procesa(this);
+	 System.out.println("&&");
+	 prog.sinst().procesa(this);
+ }
     public void procesa(OPDec op){
     	op.sdec().procesa(this);
+		System.out.println();
     }
 
-	
 	public void procesa(SDec_una sdec){
     	sdec.dec().procesa(this);
 	}  
@@ -110,121 +119,130 @@ public class Impresion extends ProcesamientoPorDefecto {
 		System.out.print("proc ");
 		System.out.print(dec.iden());
 		System.out.print(" (");
-		dec.params().procesa(this);
+        if(dec.params()!=null){
+		    dec.params().procesa(this);
+        }
 		System.out.print(") {");
+		System.out.println();
 		dec.bloque().procesa(this);
 		System.out.print("}");
-	}  
-	public void procesa(TipoVar tipo){
-		System.out.print(tipo.tipo());
-	}  
-	
+	}   
 	public void procesa(TipoVar_iden tipo){
-		System.out.print(tipo.tipo());
-	}  
+		System.out.print(tipo.iden());
+	}
 	
 	public void procesa(TipoVar_pointer tipo){
-		System.out.print("pointer");
-      tipo.subtipo().procesa(this);
+		System.out.print("pointer ");
+      	tipo.subtipo().procesa(this);
 	}  
 
 	public void procesa(TipoVar_array tipo){
 		System.out.print("array");
-		System.out.print(" ["+tipo.tam()+"] ");
+		System.out.print("["+tipo.tam()+"] ");
       	System.out.print("of ");
       	tipo.subtipo().procesa(this);
 	}  
 
-	public void procesa(ParamFormales param){
-		param.list().procesa(this);
-	}  
 	public void procesa(Lista_param_uno param){
 		param.param().procesa(this);
 	} 
 
 	public void procesa(Lista_param_muchos param){
-		param.param().procesa(this);
 		param.listaParam().procesa(this);
+        System.out.print(", ");
+		param.param().procesa(this);
 	} 
-
 
    public void procesa(TipoVar_record tipo){
 		System.out.print("record");
-		System.out.print("{");
-      tipo.campos().procesa(this);
-      System.out.print("}");
+		System.out.println("{");
+        tipo.campos().procesa(this);
+		System.out.println();
+        System.out.print("}");
 	}
     
     public void procesa(Param_amps param_amps) {
-        param_amps.tipo();
-        System.out.println("& " + param_amps.iden());
+        param_amps.tipo().procesa(this);
+        System.out.print("& " + param_amps.iden());
     }
     public void procesa(Param_normal param_normal) {
-        param_normal.tipo();
-        System.out.println(" "+param_normal.iden());
+        param_normal.tipo().procesa(this);
+        System.out.print(" "+param_normal.iden());
     }
 
-    public void procesa(Bloque bloque) {
-        if (bloque != null) {
-            bloque.programa().procesa(this);
-            System.out.println();
-        }
+    public void procesa(Bloque_con bloque) {
+        bloque.programa().procesa(this);
+        System.out.println();
+    }
+
+    public void procesa(Bloque_sin bloque) {
+        System.out.println();
     }
 
     public void procesa(Inst_asig inst_asig) {
         inst_asig.exp1().procesa(this);
-        System.out.println(inst_asig.exp1() + " = ");
+        System.out.print(" = ");
         inst_asig.exp2().procesa(this);
     }
     public void procesa(Inst_if inst_if) {
        System.out.print("if ");
        inst_if.exp0().procesa(this);
-       System.out.print(" then ");
+       System.out.println(" then ");
        inst_if.sInst().procesa(this);
-       System.out.print(" ");
+       System.out.println();
        inst_if.elsee().procesa(this);
-       System.out.println(" endif");
+       System.out.println();
+       System.out.print(" endif");
     }
 
-	public void procesa(Else_muchos _else){
+	public void procesa(Else_muchos _else) {
+        System.out.println("else");
 		_else.sinst().procesa(this);
 	}
-
+    public void procesa(Else_ninguno else_ninguno) {
+        //System.out.println();
+    }
+	public void procesa(Inst_write inst_write) {
+		System.out.print("write ");
+        inst_write.exp0().procesa(this);
+	}
     public void procesa(Inst_while inst_while) {
         System.out.print("while ");
         inst_while.exp0().procesa(this);
         System.out.print(" do ");
+        System.out.println();
         inst_while.sInst().procesa(this);
-        System.out.println(" endwhile");
+        System.out.println();
+        System.out.print("endwhile");
     }
     public void procesa(Inst_read inst_read) {
         System.out.print("read ");
         inst_read.exp0().procesa(this);
-        System.out.println();
+        //System.out.println();
     }
     public void procesa(Inst_nl inst_nl) {
-        System.out.println("nl");
+        System.out.print("nl");
     }
     public void procesa(Inst_new inst_new) {
         System.out.print("new ");
         inst_new.exp0().procesa(this);
-        System.out.println();
+        //System.out.println();
     }
     public void procesa(Inst_delete inst_delete) {
         System.out.print("delete ");
         inst_delete.exp0().procesa(this);
-        System.out.println();
+        //System.out.println();
     }
     public void procesa(Inst_call inst_call) {
         System.out.print("call ");
-        inst_call.iden();
+        System.out.print(inst_call.iden());
         System.out.print(" (");
         inst_call.paramReales().procesa(this);
         System.out.print(") ");
-        System.out.println();
+        //System.out.println();
     }
     public void procesa(Inst_bloque inst_bloque) {
-        System.out.print("{");
+        System.out.println("{");
         inst_bloque.bloque().procesa(this);
         System.out.println("}");
     }
@@ -234,13 +252,14 @@ public class Impresion extends ProcesamientoPorDefecto {
    }
 
    public void procesa(ListaCampos_muchos campo) {
-		System.out.print(";");
-    	campo.campo().procesa(this);
 		campo.lista_campos().procesa(this);
+		System.out.println(";");
+    	campo.campo().procesa(this);
    }
 
     public void procesa(Campo campo) {
     	campo.tipo().procesa(this);
+		System.out.print(" ");
 		System.out.print(campo.ide());
    }
 
@@ -249,11 +268,11 @@ public class Impresion extends ProcesamientoPorDefecto {
         paramReales_muchos.paramReales().procesa(this);
         System.out.print(", ");
         paramReales_muchos.exp0().procesa(this);
-        System.out.println();
+        //System.out.println();
     }
     public void procesa(ParamReales_uno paramReales_uno) {
         paramReales_uno.exp0().procesa(this);
-        System.out.println();
+        //System.out.println();
     }
 
     public void procesa(SInst_muchas sinst){
@@ -346,25 +365,28 @@ public class Impresion extends ProcesamientoPorDefecto {
 
    public void procesa(Array array) {
        array.arg0().procesa(this);
-       System.out.println(" [");
+       System.out.print("[");
        array.arg1().procesa(this);
        System.out.print("] ");
    }
    public void procesa(Punto punto) {
        punto.e5().procesa(this);
-       System.out.print( " . " + punto.iden());
+       System.out.print( "." + punto.iden());
    }
    public void procesa(Flecha flecha) {
        flecha.e5().procesa(this);
-       System.out.print(" -> " + flecha.iden());
+       System.out.print("->" + flecha.iden());
    }
 
    public void procesa(PointerAst pointerAst) {
        System.out.print("* " + pointerAst.arg0());
    }
 
-   public void procesa(BooleanExp exp) {
-      System.out.print(exp.val());     
+   public void procesa(TrueExp exp) {
+      System.out.print("true");     
+   }
+   public void procesa(FalseExp exp) {
+      System.out.print("false");     
    }
    public void procesa(Entero exp) {
       System.out.print(exp.num());     
@@ -373,12 +395,29 @@ public class Impresion extends ProcesamientoPorDefecto {
       System.out.print(exp.num());
    }
    public void procesa(LitExp litExp) {
-       System.out.println(litExp.var());
+       System.out.print(litExp.var());
    }
    public void procesa(IdenExp idenExp) {
        System.out.print(idenExp.var());
    }
+
+    public void procesa(TipoEntero tipoEntero) {
+        System.out.print("int");
+    }
+    public void procesa(TipoReal tipoReal) {
+        System.out.print("real");
+    }
+    public void procesa(TipoBool tipoBool) {
+        System.out.print("bool");
+    }
+    public void procesa(TipoString tipoString) {
+        System.out.print("string");
+    }
    
+    //Nulo
+    public void procesa(Nulo nulo) {
+        System.out.print("null");
+    }
    //Metodo auxiliar
    private void imprime_arg(Exp arg, int p) {
        if (arg.prioridad() < p) {

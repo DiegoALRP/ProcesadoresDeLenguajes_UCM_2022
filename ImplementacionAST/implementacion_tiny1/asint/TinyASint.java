@@ -294,21 +294,6 @@ public class TinyASint {
     }
     
     //E7
-    public static class BooleanExp extends Exp{
-        private String booleanString;
-        public BooleanExp(String arg0) {
-            this.booleanString = arg0;
-        }
-        public String val() {return booleanString;}
-        @Override
-        public int prioridad() {
-            return 7;
-        }
-        @Override
-        public void procesa(Procesamiento p) {
-            p.procesa(this);
-        }
-    }
     
     public static class Entero extends Exp {
         
@@ -398,7 +383,34 @@ public class TinyASint {
         }
     }
 
-    //
+    //E5
+    public static class TrueExp extends Exp{
+        public TrueExp(){}
+
+        @Override
+        public int prioridad() {
+            return 5;
+        }
+
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+     public static class FalseExp extends Exp{
+        public FalseExp(){}
+
+        @Override
+        public int prioridad() {
+            return 5;
+        }
+
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+
     public static abstract class Dec {
         public Dec() {
         }
@@ -429,7 +441,7 @@ public class TinyASint {
             this.tipo=tipo;
             this.var=var;
         }
-        public TipoVar tipo(){return tipo;}
+        public TipoVar tipo() {return tipo;}
         public StringLocalizado var(){return var;}
         @Override
         public void procesa(Procesamiento p) {
@@ -438,16 +450,16 @@ public class TinyASint {
     }
     public static class Dec_proc extends Dec {
         private StringLocalizado iden;
-        private ParamFormales params;
+        private ListaParam params;
         private Bloque bloque;
-        public Dec_proc(StringLocalizado iden, ParamFormales params, Bloque bloque){
+        public Dec_proc(StringLocalizado iden, ListaParam params, Bloque bloque){
             super();
             this.iden=iden;
             this.params=params;
             this.bloque = bloque;
         }
         public StringLocalizado iden(){return iden;}
-        public ParamFormales params() { return this.params; }
+        public ListaParam params() { return this.params; }
         public Bloque bloque() { return this.bloque; }
         @Override
         public void procesa(Procesamiento p) {
@@ -455,16 +467,6 @@ public class TinyASint {
         }
     }
 
-    public static class ParamFormales {
-        private ListaParam list;
-        public ParamFormales(ListaParam list){
-            this.list=list;
-        }
-        public ListaParam list(){return list;}
-        public void procesa(Procesamiento p) {
-            p.procesa(this);
-        }
-    }
 
     public static abstract class ListaParam {
         public ListaParam() {
@@ -531,20 +533,46 @@ public class TinyASint {
         }
     }
     
-    public static class TipoVar {
-        private String tipo;
-        public TipoVar(String tipo){
-            this.tipo=tipo;
+    public static abstract class TipoVar {
+        public TipoVar(){        }
+        public abstract void procesa(Procesamiento p);     
+    }
+    public static class TipoEntero extends TipoVar {
+        public TipoEntero(){
         }
-        public String tipo(){return tipo;}
+        @Override
         public void procesa(Procesamiento p) {
-           p.procesa(this); 
-        }     
+            p.procesa(this);
+        }
+    }
+    public static class TipoReal extends TipoVar {
+        public TipoReal(){
+        }
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    public static class TipoBool extends TipoVar {
+        public TipoBool(){
+        }
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    public static class TipoString extends TipoVar {
+        public TipoString() {
+        }
+        @Override
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
     }
     public static class TipoVar_iden extends TipoVar {
         private StringLocalizado subtipo;
         public TipoVar_iden(StringLocalizado subtipo){
-            super(subtipo.s);
+            super();
             this.subtipo=subtipo;
         }
         public StringLocalizado iden(){ return subtipo;}
@@ -555,10 +583,10 @@ public class TinyASint {
      public static class TipoVar_pointer extends TipoVar {
         private TipoVar subtipo;
         public TipoVar_pointer(TipoVar subtipo){
-            super("pointer");
+            super();
             this.subtipo=subtipo;
         }
-        public TipoVar subtipo(){return subtipo;}
+        public TipoVar subtipo() {return subtipo;}
         public void procesa(Procesamiento p) {
            p.procesa(this); 
         }     
@@ -568,12 +596,11 @@ public class TinyASint {
         private TipoVar subtipo;
         private StringLocalizado tam;
         public TipoVar_array(StringLocalizado tam,TipoVar subtipo){
-            super("array");
             this.subtipo=subtipo;
             this.tam=tam;
         }
-        public TipoVar subtipo(){return subtipo;}
-        public StringLocalizado tam(){return tam;}
+        public TipoVar subtipo() {return subtipo;}
+        public StringLocalizado tam() {return tam;}
         public void procesa(Procesamiento p) {
            p.procesa(this); 
         }     
@@ -581,7 +608,7 @@ public class TinyASint {
      public static class TipoVar_record extends TipoVar {
         private ListaCampos campos;
         public TipoVar_record(ListaCampos campos){
-            super("record");
+            super();
             this.campos = campos;
         }
         public ListaCampos campos(){return campos;}
@@ -662,10 +689,26 @@ public class TinyASint {
            p.procesa(this); 
         }     
     }
-    public static class Prog {
+    
+    public abstract static class Prog {
+        public Prog() {
+        }
+        public abstract void procesa(Procesamiento procesamiento);
+    }
+    public static class Prog_sin_decs extends Prog {
+        private SInst sInst;
+        public Prog_sin_decs(SInst sInst) {
+            this.sInst = sInst;
+        }
+        public SInst sinst() { return this.sInst; }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    public static class Prog_con_decs extends Prog {
         private OPDec sdec;
         private SInst sinst;
-       public Prog(OPDec decs, SInst sinst) {
+       public Prog_con_decs(OPDec decs, SInst sinst) {
             this.sdec = decs;
             this.sinst = sinst;
 	    }
@@ -687,12 +730,24 @@ public class TinyASint {
        }
     }
 
-    public static class Bloque {
+    public static abstract class Bloque {
+        public Bloque() {
+        }
+        public abstract void procesa(Procesamiento procesamiento);
+    }
+    public static class Bloque_con extends Bloque {
         private Prog programa;
-        public Bloque(Prog programa) {
+        public Bloque_con(Prog programa) {
             this.programa = programa;
         }
         public Prog programa() { return this.programa; }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
+    public static class Bloque_sin extends Bloque {
+        public Bloque_sin() {
+        }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -766,11 +821,8 @@ public class TinyASint {
         }
     }
     public static class Inst_nl extends Inst {
-        private String nl;
-        public Inst_nl(String nl) {
-            this.nl = nl;
+        public Inst_nl() {
         }
-        public String nl() { return this.nl; }
         public void procesa(Procesamiento p) {
             p.procesa(this);
         }
@@ -855,6 +907,13 @@ public class TinyASint {
         }
         public abstract void procesa(Procesamiento p);
     }
+    public static class Else_ninguno extends Else {
+        public Else_ninguno() {
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
     public static class Else_muchos extends Else {
         private SInst sInst;
         public Else_muchos(SInst sInst) {
@@ -871,7 +930,13 @@ public class TinyASint {
         }
         public abstract void procesa(Procesamiento p);
     }
-
+    public static class ParamReales_ninguno extends ParamReales {
+        public ParamReales_ninguno() {
+        }
+        public void procesa(Procesamiento p) {
+            p.procesa(this);
+        }
+    }
     public static class ParamReales_uno extends ParamReales {
         private Exp exp0;
         public ParamReales_uno(Exp exp0) {
@@ -899,8 +964,15 @@ public class TinyASint {
     
     // Constructoras
    
-   public Prog prog(OPDec decs, SInst sinst){
+   /*public Prog prog(OPDec decs, SInst sinst){
        return new Prog(decs,sinst);
+   }*/
+   public Prog prog_sin_sdec(SInst sinst){
+       return new Prog_sin_decs(sinst);
+   }
+
+   public Prog prog_con_sdec(OPDec sdec, SInst inst){
+       return new Prog_con_decs(sdec, inst);
    }
     
     public Exp suma(Exp arg0, Exp arg1) {
@@ -948,16 +1020,12 @@ public class TinyASint {
     public Exp notOperation(Exp arg0) {
         return new NotOperation(arg0);
     }
-    public Exp booleanExp(String arg0) {
-        return new BooleanExp(arg0);
-    }
     public Exp entero(StringLocalizado arg0) {
         return new Entero(arg0);
     }
     public Exp real(StringLocalizado arg0) {
         return new Real(arg0);
     }
-    public Exp bool
     public Exp lit_cadena(StringLocalizado arg0) {
         return new LitExp(arg0);
     }
@@ -975,9 +1043,6 @@ public class TinyASint {
     }
     public Exp pointer_ast(Exp arg0){
         return new PointerAst(arg0);
-    }
-    public TipoVar tipoVar(String tipo){
-        return new TipoVar(tipo);
     }
     public TipoVar tipoVar_iden(StringLocalizado subtipo){
         return new TipoVar_iden(subtipo);
@@ -1021,14 +1086,9 @@ public class TinyASint {
     public Dec dec_type(TipoVar tipo, StringLocalizado var){
         return new Dec_type(tipo, var);
     }
-    public Dec dec_proc(StringLocalizado iden, ParamFormales params, Bloque bloque){
+    public Dec dec_proc(StringLocalizado iden, ListaParam params, Bloque bloque){
         return new Dec_proc(iden, params, bloque);
     }
-
-    public ParamFormales param_formales(ListaParam list){
-        return new ParamFormales(list);
-    }
-
 
     public Campo campo(TipoVar tipo, StringLocalizado ide){
         return new Campo(tipo, ide);
@@ -1057,8 +1117,8 @@ public class TinyASint {
     public Inst inst_write(Exp exp0) {
         return new Inst_write(exp0);
     }
-    public Inst inst_nl(String nl) {
-        return new Inst_nl(nl);
+    public Inst inst_nl() {
+        return new Inst_nl();
     }
     public Inst inst_new(Exp exp0) {
         return new Inst_new(exp0);
@@ -1075,8 +1135,8 @@ public class TinyASint {
     public OPDec opdec(SDec sdec){
         return new OPDec(sdec);
     }
-    public Bloque bloque(Prog programa){
-        return new Bloque(programa);
+    public Bloque bloque_con(Prog programa){
+        return new Bloque_con(programa);
     }
 
     public ListaParam lista_param_uno(Param param){
@@ -1094,5 +1154,31 @@ public class TinyASint {
 	public Nulo nulo() {
         return new Nulo();
     }
-
+    public TipoEntero tipoEntero() {
+        return new TipoEntero();
+    }
+    public TipoReal tipoReal() {
+        return new TipoReal();
+    }
+    public TipoBool tipoBool() {
+        return new TipoBool();
+    }
+    public TipoString tipoString() {
+        return new TipoString();
+    }
+    public Exp true_exp(){
+        return new TrueExp();
+    }
+    public Exp false_exp(){
+        return new FalseExp();
+    }
+    public ParamReales param_reales_ninguno(){
+        return new ParamReales_ninguno();
+    }
+    public Else else_ninguno() {
+        return new Else_ninguno();
+    }
+    public Bloque bloque_sin(){
+        return new Bloque_sin();
+    }
 }
