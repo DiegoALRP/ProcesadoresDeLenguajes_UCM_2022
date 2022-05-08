@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import asint.TinyASint.Prog;
+import c_ast_ascendente.AnalizadorLexico;
 import procesamientos.Impresion;
 
 public class Main {
@@ -26,6 +27,14 @@ public class Main {
 		Reader input = new InputStreamReader(new FileInputStream(in));
 		c_ast_descendente.ConstructorAST constructorast = new c_ast_descendente.ConstructorAST(input);
 		return constructorast.Ini();
+	}
+
+	private static Prog ejecuta_ascendente(String in) throws Exception {
+		
+		Reader input = new InputStreamReader(new FileInputStream(in));
+		AnalizadorLexico alex = new AnalizadorLexico(input);
+		ConstructorAST constructorast = new ConstructorAST(alex);
+		return (Prog)constructorast.parse().value;
 	}
 }
 
