@@ -2,6 +2,9 @@ package c_ast_ascendente;
 
 import java_cup.runtime.*;
 import semops.SemOps;
+import asint.TinyASint.Else;
+import asint.TinyASint.Exp;
+import asint.TinyASint.ParamReales;
 import asint.TinyASint.ParamFormales;
 import asint.TinyASint.StringLocalizado;
 import asint.TinyASint.Suma;
@@ -36,6 +39,7 @@ import asint.TinyASint.Inst_nl;
 import asint.TinyASint.Inst_read;
 import asint.TinyASint.Inst_while;
 import asint.TinyASint.Inst_write;
+import asint.TinyASint.Inst;
 import asint.TinyASint.ListaCampos_muchos;
 import asint.TinyASint.LitExp;
 import asint.TinyASint.Mayor_igual_que;
@@ -49,6 +53,7 @@ import asint.TinyASint.ParamReales_ninguno;
 import asint.TinyASint.ParamReales_uno;
 import asint.TinyASint.Param_amps;
 import asint.TinyASint.Param_normal;
+import asint.TinyASint.Param;
 import asint.TinyASint.PointerAst;
 import asint.TinyASint.Prog;
 import asint.TinyASint.SInst;
@@ -71,10 +76,12 @@ import asint.TinyASint.SInst_una;
 import asint.TinyASint.Real;
 import asint.TinyASint.TipoVar_array;
 import asint.TinyASint.ListaCampos_uno;
+import asint.TinyASint.ListaCampos;
 import asint.TinyASint.Lista_param_muchos;
 import asint.TinyASint.Lista_param_uno;
 import asint.TinyASint.TipoVar_record;
 import asint.TinyASint.TrueExp;
+import asint.TinyASint.ListaParam;
 import asint.TinyASint.Punto;
 import asint.TinyASint.Dec_type;
 import asint.TinyASint.Dec_var;
@@ -120,7 +127,7 @@ non terminal Inst Inst;
 non terminal Else Else;
 non terminal ParamReales ParamReales;
 non terminal Exp E0, E1, E2, E3, E4, E5, E6, E7;
-non terminal Character OP1AI, OP2AI, OP3NA, OP5A;
+non terminal String OP1AI, OP2AI, OP3NA, OP5A;
 
 
 
@@ -162,8 +169,8 @@ ListaCampos       ::= Campo: campo
 Campo       ::= TipoVar: tipo IDEN: iden
                 {: RESULT = sem.campo(tipo, iden);:};
 ParamFormales ::= ListaParam: params
-                {: RESULT = params;:};
-ParamFormales ::= {:RESULT = null;:};
+                {: RESULT = sem.paramFormales_con(params);:};
+ParamFormales ::= {:RESULT = sem.paramFormales_sin();:};
 ListaParam    ::= ListaParam: params COMA Param: param
                 {: RESULT = sem.lista_param_muchos(params, param);:};
 ListaParam    ::= Param: param
@@ -188,7 +195,7 @@ Inst          ::= WHILE E0: exp DO SInst: sinst ENDWHILE
 Inst          ::= READ E0: exp
                 {: RESULT = sem.inst_read(exp);:};
 Inst          ::= WRITE E0: exp
-                {: RESULT = sem.write(exp);:};
+                {: RESULT = sem.inst_write(exp);:};
 Inst          ::= NL
                 {: RESULT = sem.inst_nl();:};
 Inst          ::= NEW E0: exp
@@ -226,9 +233,9 @@ E3            ::= E4: exp1 OP3NA: op E4: exp2
 E3            ::= E4: exp
                 {: RESULT = exp;:};
 E4            ::= MENOS E5: exp
-                {: RESULT = sem.negativo(exp);:};
+                {: RESULT = sem.negativoOperation(exp);:};
 E4            ::= NOT E4: exp
-                {: RESULT = sem.not_op(exp);:};
+                {: RESULT = sem.notOperation(exp);:};
 E4            ::= E5: exp
                 {: RESULT = exp;:};
 E5            ::= E5: exp1 CORCHE_RECT_APER E0: exp2 CORCHE_RECT_CIER

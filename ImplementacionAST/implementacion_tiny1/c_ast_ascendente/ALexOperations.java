@@ -1,9 +1,8 @@
 package c_ast_ascendente;
-import ClaseLexica;
 
 public class ALexOperations {
-  private AnalizadorLexicoTiny alex;
-  public ALexOperations(AnalizadorLexicoTiny alex) {
+  private AnalizadorLexico alex;
+  public ALexOperations(AnalizadorLexico alex) {
    this.alex = alex;   
   }
   public UnidadLexica unidadEntero() {
