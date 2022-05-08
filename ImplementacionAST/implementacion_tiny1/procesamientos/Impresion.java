@@ -41,6 +41,8 @@ import asint.TinyASint.Array;
 import asint.TinyASint.Bloque_con;
 import asint.TinyASint.Bloque_sin;
 import asint.TinyASint.OrOperation;
+import asint.TinyASint.ParamFormales_con;
+import asint.TinyASint.ParamFormales_sin;
 import asint.TinyASint.ParamReales_muchos;
 import asint.TinyASint.ParamReales_uno;
 import asint.TinyASint.Param_amps;
@@ -106,7 +108,7 @@ public class Impresion extends ProcesamientoPorDefecto {
 		dec.tipo().procesa(this);
 		System.out.print(" ");
 		System.out.print(dec.var());
-	}  
+	}
 	
 	public void procesa(Dec_var dec){
 		System.out.print("var ");
@@ -153,13 +155,20 @@ public class Impresion extends ProcesamientoPorDefecto {
 		param.param().procesa(this);
 	} 
 
-   public void procesa(TipoVar_record tipo){
-		System.out.print("record");
-		System.out.println("{");
+    public void procesa(ParamFormales_con params){
+        params.listaParam().procesa(this);
+    }
+    public void procesa(ParamFormales_sin params) {
+
+    }
+
+    public void procesa(TipoVar_record tipo){
+        System.out.print("record");
+        System.out.println("{");
         tipo.campos().procesa(this);
-		System.out.println();
+        System.out.println();
         System.out.print("}");
-	}
+    }
     
     public void procesa(Param_amps param_amps) {
         param_amps.tipo().procesa(this);
@@ -200,7 +209,7 @@ public class Impresion extends ProcesamientoPorDefecto {
 		_else.sinst().procesa(this);
 	}
     public void procesa(Else_ninguno else_ninguno) {
-        //System.out.println();
+        
     }
 	public void procesa(Inst_write inst_write) {
 		System.out.print("write ");

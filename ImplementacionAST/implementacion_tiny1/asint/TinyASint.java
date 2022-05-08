@@ -986,9 +986,6 @@ public class TinyASint {
     
     // Constructoras
    
-   /*public Prog prog(OPDec decs, SInst sinst){
-       return new Prog(decs,sinst);
-   }*/
    public Prog prog_sin_sdec(SInst sinst){
        return new Prog_sin_decs(sinst);
    }

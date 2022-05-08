@@ -51,6 +51,7 @@ import asint.TinyASint.Menor_que;
 import asint.TinyASint.Mod;
 import asint.TinyASint.OrOperation;
 import asint.TinyASint.ParamFormales_con;
+import asint.TinyASint.ParamFormales_sin;
 import asint.TinyASint.ParamReales_muchos;
 import asint.TinyASint.ParamReales_ninguno;
 import asint.TinyASint.ParamReales_uno;
